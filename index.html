@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartTrace - Control de Calidad con IA en Tiempo Real</title>
+    <title>SmartTrace - Soluciones de Visión Inteligente</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -44,6 +44,100 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(59, 130, 246, 0.2);
         }
+        
+        /* --- Cyberpunk Carousel Styles v2 --- */
+        .cyber-carousel-wrapper {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 0;
+            height: 280px; /* Altura fija para el contenedor */
+        }
+        .cyber-carousel-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        .cyber-carousel {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        .carousel-card {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 320px;
+            height: 200px;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.5s ease, opacity 0.5s ease, z-index 0.5s;
+            opacity: 0;
+            transform: translateY(-50%) translateX(-50%) scale(0.5);
+            z-index: 1;
+        }
+        .carousel-card.card-center {
+            opacity: 1;
+            transform: translateY(-50%) translateX(-50%) scale(1.1);
+            z-index: 10;
+        }
+        .carousel-card.card-left {
+            opacity: 0.6;
+            transform: translateY(-50%) translateX(-105%) scale(0.9);
+            z-index: 5;
+        }
+        .carousel-card.card-right {
+            opacity: 0.6;
+            transform: translateY(-50%) translateX(5%) scale(0.9);
+            z-index: 5;
+        }
+        .carousel-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 2px solid rgba(59, 130, 246, 0.3);
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
+            transition: all 0.5s ease;
+        }
+        .carousel-card.card-center img {
+            border-color: #60a5fa;
+            box-shadow: 0 0 20px #3b82f6, 0 0 35px #3b82f6;
+        }
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 20;
+            width: 40px;
+            height: 40px;
+            background: rgba(10, 10, 10, 0.5);
+            border: 1px solid #3b82f6;
+            border-radius: 50%;
+            color: #60a5fa;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        }
+        .carousel-nav:hover {
+            background: #3b82f6;
+            color: white;
+            box-shadow: 0 0 20px #3b82f6;
+        }
+        #prev-btn { left: 15%; }
+        #next-btn { right: 15%; }
+
+        @media (max-width: 768px) {
+            .carousel-card { width: 240px; height: 150px; }
+            .carousel-card.card-left { transform: translateY(-50%) translateX(-90%) scale(0.8); }
+            .carousel-card.card-right { transform: translateY(-50%) translateX(-10%) scale(0.8); }
+            #prev-btn { left: 5px; }
+            #next-btn { right: 5px; }
+        }
     </style>
 </head>
 <body class="overflow-x-hidden">
@@ -56,7 +150,7 @@
                 <a href="#solucion" class="text-gray-300 hover:text-blue-400 transition">Solución</a>
                 <a href="#proceso" class="text-gray-300 hover:text-blue-400 transition">Proceso</a>
                 <a href="#equipo" class="text-gray-300 hover:text-blue-400 transition">Equipo</a>
-                <a href="#precios" class="text-gray-300 hover:text-blue-400 transition">Precios</a>
+                <a href="#precios" class="text-gray-300 hover:text-blue-400 transition">Planes</a>
             </nav>
             <a href="#contacto" class="hidden md:block gradient-btn text-white font-semibold py-2 px-5 rounded-lg">
                 Hablemos
@@ -70,7 +164,7 @@
             <a href="#solucion" class="block py-2 text-gray-300 hover:text-blue-400">Solución</a>
             <a href="#proceso" class="block py-2 text-gray-300 hover:text-blue-400">Proceso</a>
             <a href="#equipo" class="block py-2 text-gray-300 hover:text-blue-400">Equipo</a>
-            <a href="#precios" class="block py-2 text-gray-300 hover:text-blue-400">Precios</a>
+            <a href="#precios" class="block py-2 text-gray-300 hover:text-blue-400">Planes</a>
             <a href="#contacto" class="block mt-2 gradient-btn text-white font-semibold text-center py-2 px-5 rounded-lg transition">
                 Hablemos
             </a>
@@ -85,10 +179,10 @@
 
             <div class="container mx-auto px-6 z-10">
                 <h1 class="text-4xl md:text-6xl lg:text-7xl font-black mb-4 reveal">
-                    Reduce Desperdicios y <span class="gradient-text">Optimiza tu Producción</span>
+                    Transformá tu empresa con <span class="gradient-text">Visión Inteligente</span>
                 </h1>
                 <p class="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto mb-8 reveal" style="transition-delay: 0.2s;">
-                    Detecta fallas de calidad en tiempo real con nuestro sistema de cámaras inteligentes. Toma decisiones al instante y aumenta tu rentabilidad.
+                    Detectá fallas, optimizá procesos y gestioná tu personal de manera más eficiente, todo desde un mismo sistema.
                 </p>
                 <a href="#solucion" class="gradient-btn text-white font-bold py-3 px-8 rounded-lg text-lg transform hover:scale-105 reveal" style="transition-delay: 0.4s;">
                     Descubre cómo
@@ -101,34 +195,53 @@
             <div class="container mx-auto px-6">
                 <div class="text-center mb-12">
                     <h2 class="text-3xl md:text-4xl font-bold reveal">Nuestra Solución</h2>
-                    <p class="text-gray-400 mt-2 reveal" style="transition-delay: 0.1s;">Tecnología de vanguardia para el control de calidad.</p>
+                    <p class="text-gray-400 mt-2 reveal" style="transition-delay: 0.1s;">Tecnología de vanguardia para potenciar tu negocio.</p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Card 1 -->
                     <div class="card-bg p-8 rounded-xl reveal">
-                        <div class="bg-blue-600/20 text-blue-400 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2">Cámaras Inteligentes</h3>
-                        <p class="text-gray-400">Instalamos cámaras con tecnología edge que procesan datos en tiempo real, directamente en tu línea de producción.</p>
+                        <div class="bg-blue-600/20 text-blue-400 w-12 h-12 rounded-lg flex items-center justify-center mb-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104l7.5 7.5-7.5 7.5" /></svg></div>
+                        <h3 class="text-xl font-bold mb-2">Soluciones Flexibles</h3>
+                        <p class="text-gray-400">Cámaras inteligentes para distintos usos: control de calidad, supervisión de personal o procesos críticos.</p>
                     </div>
-                    <!-- Card 2 -->
                     <div class="card-bg p-8 rounded-xl reveal" style="transition-delay: 0.2s;">
-                        <div class="bg-blue-600/20 text-blue-400 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2">Dashboard Instantáneo</h3>
-                        <p class="text-gray-400">Visualiza la calidad de tu producción en un dashboard centralizado y toma decisiones basadas en datos precisos y al momento.</p>
+                        <div class="bg-blue-600/20 text-blue-400 w-12 h-12 rounded-lg flex items-center justify-center mb-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg></div>
+                        <h3 class="text-xl font-bold mb-2">Dashboard Centralizado</h3>
+                        <p class="text-gray-400">Visualizá toda la información en tiempo real y tomá decisiones basadas en datos precisos.</p>
                     </div>
-                    <!-- Card 3 -->
                     <div class="card-bg p-8 rounded-xl reveal" style="transition-delay: 0.4s;">
-                        <div class="bg-blue-600/20 text-blue-400 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01M12 6v-1m0-1V4m0 2.01M12 14c1.657 0 3-.895 3-2s-1.343-2-3-2m0 8c-1.11 0-2.08-.402-2.599-1M12 14v1m0-1v-.01M12 16v1m0 1v1m0-2.01" /></svg>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2">Modelo por Suscripción</h3>
-                        <p class="text-gray-400">Accede a tecnología de punta sin una gran inversión inicial. Instalamos las cámaras en comodato y nos encargamos del soporte.</p>
+                        <div class="bg-blue-600/20 text-blue-400 w-12 h-12 rounded-lg flex items-center justify-center mb-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01M12 6v-1m0-1V4m0 2.01M12 14c1.657 0 3-.895 3-2s-1.343-2-3-2m0 8c-1.11 0-2.08-.402-2.599-1M12 14v1m0-1v-.01M12 16v1m0 1v1m0-2.01" /></svg></div>
+                        <h3 class="text-xl font-bold mb-2">Modelo de Suscripción</h3>
+                        <p class="text-gray-400">Accedé a tecnología avanzada sin grandes inversiones iniciales. Incluye instalación, soporte y actualizaciones.</p>
                     </div>
                 </div>
+            </div>
+        </section>
+        
+        <!-- Video Section -->
+        <section id="video" class="py-20 bg-black/50">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold reveal">Tecnología de visión inteligente: calidad asegurada, procesos optimizados y mayor productividad.</h2>
+                <p class="text-gray-400 mt-4 max-w-3xl mx-auto reveal" style="transition-delay: 0.1s;">Nuestras soluciones de análisis con cámaras inteligentes se adaptan a distintos escenarios, detectando fallas, supervisando personal o monitoreando procesos en tiempo real.</p>
+                <div class="aspect-video max-w-4xl mx-auto mt-8 rounded-xl overflow-hidden shadow-2xl shadow-blue-500/20 reveal" style="transition-delay: 0.2s;">
+                    <iframe class="w-full h-full" src="https://www.youtube.com/embed/VmZc-id5iC0?autoplay=1&mute=1&loop=1&playlist=VmZc-id5iC0&controls=0&showinfo=0&rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+        </section>
+
+        <!-- Carousel Section -->
+        <section id="carousel" class="py-20">
+            <div class="cyber-carousel-wrapper">
+                <button id="prev-btn" class="carousel-nav">&lt;</button>
+                <div class="cyber-carousel-container">
+                    <div id="cyber-carousel" class="cyber-carousel">
+                        <div class="carousel-card"><img src="https://placehold.co/600x360/0a0a0a/3b82f6?text=Control+de+Calidad" alt="Control de Calidad"></div>
+                        <div class="carousel-card"><img src="https://placehold.co/600x360/0a0a0a/60a5fa?text=Gestión+de+Personal" alt="Gestión de Personal"></div>
+                        <div class="carousel-card"><img src="https://placehold.co/600x360/0a0a0a/93c5fd?text=Seguridad+Industrial" alt="Seguridad Industrial"></div>
+                        <div class="carousel-card"><img src="https://placehold.co/600x360/0a0a0a/bfdbfe?text=Optimización+de+Procesos" alt="Optimización de Procesos"></div>
+                        <div class="carousel-card"><img src="https://placehold.co/600x360/0a0a0a/3b82f6?text=Análisis+en+Tiempo+Real" alt="Análisis en Tiempo Real"></div>
+                    </div>
+                </div>
+                 <button id="next-btn" class="carousel-nav">&gt;</button>
             </div>
         </section>
 
@@ -137,30 +250,30 @@
             <div class="container mx-auto px-6">
                 <div class="text-center mb-12">
                     <h2 class="text-3xl md:text-4xl font-bold reveal">Implementación Simple</h2>
-                    <p class="text-gray-400 mt-2 reveal" style="transition-delay: 0.1s;">Nuestro camino para potenciar tu planta.</p>
+                    <p class="text-gray-400 mt-2 reveal" style="transition-delay: 0.1s;">Nuestro camino para potenciar tu empresa.</p>
                 </div>
                 <div class="relative">
                     <div class="hidden md:block absolute top-5 left-0 w-full h-0.5 bg-blue-900/50"></div>
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
                         <div class="text-center reveal">
                             <div class="w-12 h-12 mx-auto bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl z-10 relative mb-4">1</div>
-                            <h3 class="font-bold text-lg mb-1">Diagnóstico</h3>
-                            <p class="text-gray-400 text-sm">Analizamos tus necesidades y puntos críticos de control.</p>
+                            <h3 class="font-bold text-lg mb-1">Relevamiento</h3>
+                            <p class="text-gray-400 text-sm">Identificamos tus objetivos (control de calidad, seguridad, productividad, etc.) y definimos los puntos estratégicos de monitoreo.</p>
                         </div>
                         <div class="text-center reveal" style="transition-delay: 0.2s;">
                             <div class="w-12 h-12 mx-auto bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl z-10 relative mb-4">2</div>
-                            <h3 class="font-bold text-lg mb-1">Instalación</h3>
-                            <p class="text-gray-400 text-sm">Instalamos y configuramos las cámaras sin interrumpir tu operación.</p>
+                            <h3 class="font-bold text-lg mb-1">Configuración</h3>
+                            <p class="text-gray-400 text-sm">Instalamos y adaptamos las cámaras inteligentes y el sistema de análisis sin interrumpir tus operaciones.</p>
                         </div>
                         <div class="text-center reveal" style="transition-delay: 0.4s;">
                             <div class="w-12 h-12 mx-auto bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl z-10 relative mb-4">3</div>
-                            <h3 class="font-bold text-lg mb-1">Puesta en Marcha</h3>
-                            <p class="text-gray-400 text-sm">Capacitamos a tu equipo y activamos el sistema de monitoreo.</p>
+                            <h3 class="font-bold text-lg mb-1">Activación</h3>
+                            <p class="text-gray-400 text-sm">Integramos la solución al dashboard centralizado y capacitamos a tu equipo.</p>
                         </div>
                         <div class="text-center reveal" style="transition-delay: 0.6s;">
                             <div class="w-12 h-12 mx-auto bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl z-10 relative mb-4">4</div>
-                            <h3 class="font-bold text-lg mb-1">Soporte Continuo</h3>
-                            <p class="text-gray-400 text-sm">Ofrecemos mantenimiento y optimización constante.</p>
+                            <h3 class="font-bold text-lg mb-1">Optimización Continua</h3>
+                            <p class="text-gray-400 text-sm">Acompañamos con soporte técnico, actualizaciones y mejoras en base a tus necesidades.</p>
                         </div>
                     </div>
                 </div>
@@ -175,36 +288,12 @@
                     <p class="text-gray-400 mt-2 reveal" style="transition-delay: 0.1s;">Expertos apasionados por la eficiencia industrial.</p>
                 </div>
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 text-center">
-                    <div class="reveal">
-                        <div class="w-24 h-24 mx-auto rounded-full bg-blue-900/50 mb-2 flex items-center justify-center"><span class="text-3xl">EM</span></div>
-                        <h4 class="font-bold">Emiliano Manganiello</h4>
-                        <p class="text-sm text-blue-400">Fundador</p>
-                    </div>
-                     <div class="reveal" style="transition-delay: 0.1s;">
-                        <div class="w-24 h-24 mx-auto rounded-full bg-blue-900/50 mb-2 flex items-center justify-center"><span class="text-3xl">GN</span></div>
-                        <h4 class="font-bold">Guido Naselli</h4>
-                        <p class="text-sm text-blue-400">Gerente / Coordinador</p>
-                    </div>
-                     <div class="reveal" style="transition-delay: 0.2s;">
-                        <div class="w-24 h-24 mx-auto rounded-full bg-blue-900/50 mb-2 flex items-center justify-center"><span class="text-3xl">MO</span></div>
-                        <h4 class="font-bold">Marcos Ostertag</h4>
-                        <p class="text-sm text-blue-400">Técnico especialista</p>
-                    </div>
-                     <div class="reveal" style="transition-delay: 0.3s;">
-                        <div class="w-24 h-24 mx-auto rounded-full bg-blue-900/50 mb-2 flex items-center justify-center"><span class="text-3xl">MG</span></div>
-                        <h4 class="font-bold">Malena Gonzalez</h4>
-                        <p class="text-sm text-blue-400">Creativa / Innovadora</p>
-                    </div>
-                     <div class="reveal" style="transition-delay: 0.4s;">
-                        <div class="w-24 h-24 mx-auto rounded-full bg-blue-900/50 mb-2 flex items-center justify-center"><span class="text-3xl">MD</span></div>
-                        <h4 class="font-bold">María Diamante</h4>
-                        <p class="text-sm text-blue-400">Analista / Investigadora</p>
-                    </div>
-                     <div class="reveal" style="transition-delay: 0.5s;">
-                        <div class="w-24 h-24 mx-auto rounded-full bg-blue-900/50 mb-2 flex items-center justify-center"><span class="text-3xl">AZ</span></div>
-                        <h4 class="font-bold">Abel Zabala</h4>
-                        <p class="text-sm text-blue-400">Mentor</p>
-                    </div>
+                    <div class="reveal"><div class="w-24 h-24 mx-auto rounded-full bg-blue-900/50 mb-2 flex items-center justify-center"><span class="text-3xl">EM</span></div><h4 class="font-bold">Emiliano Manganiello</h4><p class="text-sm text-blue-400">Fundador</p></div>
+                    <div class="reveal" style="transition-delay: 0.1s;"><div class="w-24 h-24 mx-auto rounded-full bg-blue-900/50 mb-2 flex items-center justify-center"><span class="text-3xl">GN</span></div><h4 class="font-bold">Guido Naselli</h4><p class="text-sm text-blue-400">Gerente / Coordinador</p></div>
+                    <div class="reveal" style="transition-delay: 0.2s;"><div class="w-24 h-24 mx-auto rounded-full bg-blue-900/50 mb-2 flex items-center justify-center"><span class="text-3xl">MO</span></div><h4 class="font-bold">Marcos Ostertag</h4><p class="text-sm text-blue-400">Técnico especialista</p></div>
+                    <div class="reveal" style="transition-delay: 0.3s;"><div class="w-24 h-24 mx-auto rounded-full bg-blue-900/50 mb-2 flex items-center justify-center"><span class="text-3xl">MG</span></div><h4 class="font-bold">Malena Gonzalez</h4><p class="text-sm text-blue-400">Creativa / Innovadora</p></div>
+                    <div class="reveal" style="transition-delay: 0.4s;"><div class="w-24 h-24 mx-auto rounded-full bg-blue-900/50 mb-2 flex items-center justify-center"><span class="text-3xl">MD</span></div><h4 class="font-bold">María Diamante</h4><p class="text-sm text-blue-400">Analista / Investigadora</p></div>
+                    <div class="reveal" style="transition-delay: 0.5s;"><div class="w-24 h-24 mx-auto rounded-full bg-blue-900/50 mb-2 flex items-center justify-center"><span class="text-3xl">AZ</span></div><h4 class="font-bold">Abel Zabala</h4><p class="text-sm text-blue-400">Mentor</p></div>
                 </div>
             </div>
         </section>
@@ -213,12 +302,11 @@
         <section id="precios" class="py-20 bg-black/50">
             <div class="container mx-auto px-6">
                 <div class="text-center max-w-3xl mx-auto">
-                    <h2 class="text-3xl md:text-4xl font-bold reveal">Democratizamos la Tecnología</h2>
-                    <p class="text-gray-400 mt-4 reveal" style="transition-delay: 0.1s;">Ofrecemos un modelo de suscripción mensual simple y accesible para que puedas acceder a control de calidad avanzado sin grandes inversiones de capital. Nos adaptamos al tamaño de tu planta.</p>
+                    <h2 class="text-3xl md:text-4xl font-bold reveal">Soluciones a tu Medida</h2>
+                    <p class="text-gray-400 mt-4 reveal" style="transition-delay: 0.1s;">Ofrecemos soluciones de visión inteligente adaptadas a las necesidades de cada empresa. A través de un modelo flexible de suscripción, brindamos acceso a tecnología de análisis con cámaras inteligentes que permiten desde control de calidad hasta gestión de personal, sin grandes inversiones iniciales.</p>
                     <div class="card-bg rounded-xl p-8 mt-8 reveal" style="transition-delay: 0.2s;">
-                        <h3 class="text-2xl font-bold gradient-text">Paquete Inicial</h3>
-                        <p class="text-4xl font-black my-4">desde 500 USD<span class="text-lg font-normal text-gray-400">/mes</span></p>
-                        <p class="text-gray-300">Incluye la instalación de 4 cámaras en comodato, acceso al dashboard y soporte técnico completo.</p>
+                        <h3 class="text-2xl font-bold gradient-text">Planes Personalizados</h3>
+                        <p class="text-gray-300 mt-4">Diseñamos la solución a medida de tu empresa, desde el control de calidad en la producción hasta la supervisión de personal y procesos. Todos los planes incluyen instalación, acceso al dashboard y soporte técnico completo.</p>
                         <a href="#contacto" class="mt-6 inline-block gradient-btn text-white font-bold py-3 px-8 rounded-lg text-lg transform hover:scale-105">
                             Solicitar Cotización
                         </a>
@@ -231,24 +319,19 @@
         <section id="contacto" class="py-20">
             <div class="container mx-auto px-6">
                  <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold reveal">¿Listo para reducir costos?</h2>
-                    <p class="text-gray-400 mt-2 max-w-2xl mx-auto reveal" style="transition-delay: 0.1s;">Contáctanos para un diagnóstico sin cargo. Estamos aquí para ayudarte a construir el futuro de tu planta.</p>
+                    <h2 class="text-3xl md:text-4xl font-bold reveal">¿Listo para transformar tu empresa?</h2>
+                    <p class="text-gray-400 mt-2 max-w-2xl mx-auto reveal" style="transition-delay: 0.1s;">Contáctanos para un diagnóstico sin cargo. Estamos aquí para ayudarte a construir el futuro de tu negocio.</p>
                 </div>
                 <div class="max-w-xl mx-auto">
-                    <form class="space-y-6 reveal">
-                        <div>
-                            <input type="text" placeholder="Tu nombre" class="w-full bg-gray-900/50 border border-blue-800/50 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
-                        </div>
-                        <div>
-                            <input type="email" placeholder="Tu email" class="w-full bg-gray-900/50 border border-blue-800/50 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
-                        </div>
-                        <div>
-                            <textarea rows="5" placeholder="Cuéntanos sobre tu planta y tus desafíos..." class="w-full bg-gray-900/50 border border-blue-800/50 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"></textarea>
-                        </div>
+                    <form id="contact-form" class="space-y-6 reveal">
+                        <div><input type="text" name="name" placeholder="Tu nombre" class="w-full bg-gray-900/50 border border-blue-800/50 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition" required></div>
+                        <div><input type="email" name="email" placeholder="Tu email" class="w-full bg-gray-900/50 border border-blue-800/50 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition" required></div>
+                        <div><textarea name="message" rows="5" placeholder="Cuéntanos sobre tu empresa y tus desafíos..." class="w-full bg-gray-900/50 border border-blue-800/50 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition" required></textarea></div>
                         <div class="text-center">
                             <button type="submit" class="gradient-btn text-white font-bold py-3 px-12 rounded-lg text-lg transform hover:scale-105">
                                 Enviar Mensaje
                             </button>
+                            <p id="form-success-message" class="text-green-400 mt-4 opacity-0 transition-opacity duration-300">¡Mensaje enviado con éxito!</p>
                         </div>
                     </form>
                 </div>
@@ -264,37 +347,108 @@
     </footer>
 
     <script>
-        // Script para el menú móvil
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
+        document.addEventListener('DOMContentLoaded', function() {
+            // Script para el menú móvil
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
 
-        // Script para cambiar el fondo del header al hacer scroll
-        const header = document.getElementById('header');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                header.classList.add('bg-black/80');
-            } else {
-                header.classList.remove('bg-black/80');
-            }
-        });
-
-        // Script para animaciones de aparición al hacer scroll
-        const revealElements = document.querySelectorAll('.reveal');
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
+            // Script para cambiar el fondo del header al hacer scroll
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('bg-black/80');
+                } else {
+                    header.classList.remove('bg-black/80');
                 }
             });
-        }, {
-            threshold: 0.1
-        });
 
-        revealElements.forEach(el => {
-            revealObserver.observe(el);
+            // Script para animaciones de aparición al hacer scroll
+            const revealElements = document.querySelectorAll('.reveal');
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.1 });
+            revealElements.forEach(el => {
+                revealObserver.observe(el);
+            });
+
+            // --- Cyberpunk Carousel Script v2 ---
+            const carousel = document.getElementById('cyber-carousel');
+            if (carousel) {
+                const cards = carousel.querySelectorAll('.carousel-card');
+                const prevBtn = document.getElementById('prev-btn');
+                const nextBtn = document.getElementById('next-btn');
+                
+                const cardCount = cards.length;
+                let currentIndex = 0;
+                let autoRotateInterval;
+
+                function updateCarouselClasses() {
+                    cards.forEach((card, i) => {
+                        card.classList.remove('card-center', 'card-left', 'card-right');
+
+                        const leftIndex = (currentIndex - 1 + cardCount) % cardCount;
+                        const rightIndex = (currentIndex + 1) % cardCount;
+
+                        if (i === currentIndex) {
+                            card.classList.add('card-center');
+                        } else if (i === leftIndex) {
+                            card.classList.add('card-left');
+                        } else if (i === rightIndex) {
+                            card.classList.add('card-right');
+                        }
+                    });
+                }
+
+                function startAutoRotate() {
+                    stopAutoRotate(); // Evitar intervalos múltiples
+                    autoRotateInterval = setInterval(() => {
+                        currentIndex = (currentIndex + 1) % cardCount;
+                        updateCarouselClasses();
+                    }, 4000);
+                }
+                
+                function stopAutoRotate() {
+                     clearInterval(autoRotateInterval);
+                }
+
+                prevBtn.addEventListener('click', () => {
+                    currentIndex = (currentIndex - 1 + cardCount) % cardCount;
+                    updateCarouselClasses();
+                    startAutoRotate(); // Reiniciar el intervalo
+                });
+
+                nextBtn.addEventListener('click', () => {
+                    currentIndex = (currentIndex + 1) % cardCount;
+                    updateCarouselClasses();
+                    startAutoRotate(); // Reiniciar el intervalo
+                });
+                
+                updateCarouselClasses(); // Carga inicial
+                startAutoRotate();
+            }
+
+            // Script para limpiar el formulario y mostrar mensaje
+            const contactForm = document.getElementById('contact-form');
+            const successMessage = document.getElementById('form-success-message');
+            if(contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault(); // Previene el envío real del formulario
+                    
+                    contactForm.reset();
+                    successMessage.style.opacity = '1';
+
+                    setTimeout(() => {
+                        successMessage.style.opacity = '0';
+                    }, 3000);
+                });
+            }
         });
     </script>
 </body>
