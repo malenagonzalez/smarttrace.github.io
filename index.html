@@ -52,7 +52,7 @@
             justify-content: center;
             align-items: center;
             padding: 2rem 0;
-            height: 280px; /* Altura fija para el contenedor */
+            height: 360px; /* Altura aumentada */
         }
         .cyber-carousel-container {
             position: relative;
@@ -68,8 +68,8 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 320px;
-            height: 200px;
+            width: 400px; /* Ancho aumentado */
+            height: 250px; /* Altura aumentada */
             border-radius: 12px;
             overflow: hidden;
             transition: transform 0.5s ease, opacity 0.5s ease, z-index 0.5s;
@@ -84,12 +84,12 @@
         }
         .carousel-card.card-left {
             opacity: 0.6;
-            transform: translateY(-50%) translateX(-105%) scale(0.9);
+            transform: translateY(-50%) translateX(-110%) scale(0.9); /* Ajustado */
             z-index: 5;
         }
         .carousel-card.card-right {
             opacity: 0.6;
-            transform: translateY(-50%) translateX(5%) scale(0.9);
+            transform: translateY(-50%) translateX(10%) scale(0.9); /* Ajustado */
             z-index: 5;
         }
         .carousel-card img {
@@ -104,6 +104,24 @@
         .carousel-card.card-center img {
             border-color: #60a5fa;
             box-shadow: 0 0 20px #3b82f6, 0 0 35px #3b82f6;
+        }
+        .card-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: #e5e7eb;
+            font-weight: 600;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .carousel-card.card-center .card-caption {
+            opacity: 1;
+            transform: translateY(0);
         }
         .carousel-nav {
             position: absolute;
@@ -132,6 +150,7 @@
         #next-btn { right: 15%; }
 
         @media (max-width: 768px) {
+            .cyber-carousel-wrapper { height: 280px; }
             .carousel-card { width: 240px; height: 150px; }
             .carousel-card.card-left { transform: translateY(-50%) translateX(-90%) scale(0.8); }
             .carousel-card.card-right { transform: translateY(-50%) translateX(-10%) scale(0.8); }
@@ -234,9 +253,18 @@
                 <button id="prev-btn" class="carousel-nav">&lt;</button>
                 <div class="cyber-carousel-container">
                     <div id="cyber-carousel" class="cyber-carousel">
-                        <div class="carousel-card"><img src="https://tipteh.com/wp-content/uploads/2024/12/racer-2-S-Line-Scan-Camera-Basler_featured.webp" alt="Control de Calidad"></div>
-                        <div class="carousel-card"><img src="https://mb.cision.com/Public/17133/Cnct_FtrdImg_Dj_3149243/b1a03638f6403236_featured.jpg" alt="Gestión de Personal"></div>
-                        <div class="carousel-card"><img src="https://recab.com/wp-content/uploads/2022/02/Keyence-CV-X4.jpg" alt="Seguridad Industrial"></div>
+                        <div class="carousel-card">
+                            <img src="https://tipteh.com/wp-content/uploads/2024/12/racer-2-S-Line-Scan-Camera-Basler_featured.webp" alt="Control de Calidad">
+                            <div class="card-caption">Control de Calidad</div>
+                        </div>
+                        <div class="carousel-card">
+                            <img src="https://mb.cision.com/Public/17133/Cnct_FtrdImg_Dj_3149243/b1a03638f6403236_featured.jpg" alt="Gestión de Personal">
+                            <div class="card-caption">Gestión de Personal</div>
+                        </div>
+                        <div class="carousel-card">
+                            <img src= "https://recab.com/wp-content/uploads/2022/02/Keyence-CV-X4.jpg" alt="Seguridad Industrial">
+                            <div class="card-caption">Seguridad Industrial</div>
+                        </div>
                     </div>
                 </div>
                  <button id="next-btn" class="carousel-nav">&gt;</button>
@@ -318,13 +346,13 @@
             <div class="container mx-auto px-6">
                  <div class="text-center mb-12">
                     <h2 class="text-3xl md:text-4xl font-bold reveal">¿Listo para transformar tu empresa?</h2>
-                    <p class="text-gray-400 mt-2 max-w-2xl mx-auto reveal" style="transition-delay: 0.1s;">Contáctanos para un diagnóstico sin cargo. Estamos aquí para ayudarte a construir el futuro de tu negocio.</p>
+                    <p class="text-gray-400 mt-2 max-w-2xl mx-auto reveal" style="transition-delay: 0.1s;">Contactanos para un diagnóstico sin cargo. Estamo para ayudarte a construir el futuro de tu negocio.</p>
                 </div>
                 <div class="max-w-xl mx-auto">
                     <form id="contact-form" class="space-y-6 reveal">
                         <div><input type="text" name="name" placeholder="Tu nombre" class="w-full bg-gray-900/50 border border-blue-800/50 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition" required></div>
                         <div><input type="email" name="email" placeholder="Tu email" class="w-full bg-gray-900/50 border border-blue-800/50 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition" required></div>
-                        <div><textarea name="message" rows="5" placeholder="Cuéntanos sobre tu empresa y tus desafíos..." class="w-full bg-gray-900/50 border border-blue-800/50 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition" required></textarea></div>
+                        <div><textarea name="message" rows="5" placeholder="Contanos sobre tu empresa y tus desafíos..." class="w-full bg-gray-900/50 border border-blue-800/50 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition" required></textarea></div>
                         <div class="text-center">
                             <button type="submit" class="gradient-btn text-white font-bold py-3 px-12 rounded-lg text-lg transform hover:scale-105">
                                 Enviar Mensaje
@@ -340,7 +368,7 @@
     <!-- Footer -->
     <footer class="bg-black py-8">
         <div class="container mx-auto px-6 text-center text-gray-500">
-            <p>&copy; 2024 SmartTrace. Todos los derechos reservados.</p>
+            <p>&copy; 2025 SmartTrace. Todos los derechos reservados.</p>
         </div>
     </footer>
 
