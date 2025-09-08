@@ -8,156 +8,164 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0a0a0a;
-            color: #e5e7eb;
-        }
-        /* Animación de aparición */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .gradient-text {
-            background: linear-gradient(90deg, #3b82f6, #60a5fa, #93c5fd);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-fill-color: transparent;
-        }
-        .gradient-btn {
-            background-image: linear-gradient(to right, #3b82f6 0%, #60a5fa 50%, #3b82f6 100%);
-            background-size: 200% auto;
-            transition: all 0.3s ease-in-out;
-        }
-        .gradient-btn:hover {
-            background-position: right center;
-        }
-        .card-bg {
-            background-color: rgba(23, 23, 23, 0.5);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-        }
-        
-        /* --- Cyberpunk Carousel Styles v2 --- */
-        .cyber-carousel-wrapper {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem 0;
-            height: 360px; /* Altura aumentada */
-        }
-        .cyber-carousel-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-        .cyber-carousel {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-        .carousel-card {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 400px; /* Ancho aumentado */
-            height: 250px; /* Altura aumentada */
-            border-radius: 12px;
-            overflow: hidden;
-            transition: transform 0.5s ease, opacity 0.5s ease, z-index 0.5s;
-            opacity: 0;
-            transform: translateY(-50%) translateX(-50%) scale(0.5);
-            z-index: 1;
-        }
-        .carousel-card.card-center {
-            opacity: 1;
-            transform: translateY(-50%) translateX(-50%) scale(1.1);
-            z-index: 10;
-        }
-        .carousel-card.card-left {
-            opacity: 0.6;
-            transform: translateY(-50%) translateX(-110%) scale(0.9); /* Ajustado */
-            z-index: 5;
-        }
-        .carousel-card.card-right {
-            opacity: 0.6;
-            transform: translateY(-50%) translateX(10%) scale(0.9); /* Ajustado */
-            z-index: 5;
-        }
-        .carousel-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 12px;
-            border: 2px solid rgba(59, 130, 246, 0.3);
-            box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
-            transition: all 0.5s ease;
-        }
-        .carousel-card.card-center img {
-            border-color: #60a5fa;
-            box-shadow: 0 0 20px #3b82f6, 0 0 35px #3b82f6;
-        }
-        .card-caption {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 1rem;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-            color: #e5e7eb;
-            font-weight: 600;
-            text-align: center;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-        .carousel-card.card-center .card-caption {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .carousel-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 20;
-            width: 40px;
-            height: 40px;
-            background: rgba(10, 10, 10, 0.5);
-            border: 1px solid #3b82f6;
-            border-radius: 50%;
-            color: #60a5fa;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
-        }
-        .carousel-nav:hover {
-            background: #3b82f6;
-            color: white;
-            box-shadow: 0 0 20px #3b82f6;
-        }
-        #prev-btn { left: 15%; }
-        #next-btn { right: 15%; }
+<style>
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #0a0a0a;
+        color: #e5e7eb;
+    }
+    /* Animación de aparición */
+    .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .gradient-text {
+        background: linear-gradient(90deg, #3b82f6, #60a5fa, #93c5fd);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-fill-color: transparent;
+    }
+    .gradient-btn {
+        background-image: linear-gradient(to right, #3b82f6 0%, #60a5fa 50%, #3b82f6 100%);
+        background-size: 200% auto;
+        transition: all 0.3s ease-in-out;
+    }
+    .gradient-btn:hover {
+        background-position: right center;
+    }
+    .card-bg {
+        background-color: rgba(23, 23, 23, 0.5);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(59, 130, 246, 0.2);
+    }
+    
+    /* --- Cyberpunk Carousel Styles v2 --- */
+    .cyber-carousel-wrapper {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem 0;
+        height: 420px; /* bajamos de 500px */
+    }
+    .cyber-carousel-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+    .cyber-carousel {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+    .carousel-card {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 450px; /* reducido 25% */
+        height: 260px; /* reducido 25% */
+        border-radius: 12px;
+        overflow: hidden;
+        transition: transform 0.5s ease, opacity 0.5s ease, z-index 0.5s;
+        opacity: 0;
+        transform: translateY(-50%) translateX(-50%) scale(0.5);
+        z-index: 1;
+    }
+    .carousel-card.card-center {
+        opacity: 1;
+        transform: translateY(-50%) translateX(-50%) scale(1.1); /* bajamos de 1.2 */
+        z-index: 10;
+    }
+    .carousel-card.card-left {
+        opacity: 0.6;
+        transform: translateY(-50%) translateX(-115%) scale(0.9);
+        z-index: 5;
+    }
+    .carousel-card.card-right {
+        opacity: 0.6;
+        transform: translateY(-50%) translateX(15%) scale(0.9);
+        z-index: 5;
+    }
+    .carousel-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 12px;
+        border: 2px solid rgba(59, 130, 246, 0.3);
+        box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
+        transition: all 0.5s ease;
+    }
+    .carousel-card.card-center img {
+        border-color: #60a5fa;
+        box-shadow: 0 0 20px #3b82f6, 0 0 35px #3b82f6;
+    }
+    .card-caption {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 1rem;
+        background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+        color: #e5e7eb;
+        font-weight: 600;
+        text-align: center;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .carousel-card.card-center .card-caption {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .carousel-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 20;
+        width: 40px;
+        height: 40px;
+        background: rgba(10, 10, 10, 0.5);
+        border: 1px solid #3b82f6;
+        border-radius: 50%;
+        color: #60a5fa;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+    }
+    .carousel-nav:hover {
+        background: #3b82f6;
+        color: white;
+        box-shadow: 0 0 20px #3b82f6;
+    }
+    #prev-btn { left: 15%; }
+    #next-btn { right: 15%; }
 
-        @media (max-width: 768px) {
-            .cyber-carousel-wrapper { height: 280px; }
-            .carousel-card { width: 240px; height: 150px; }
-            .carousel-card.card-left { transform: translateY(-50%) translateX(-90%) scale(0.8); }
-            .carousel-card.card-right { transform: translateY(-50%) translateX(-10%) scale(0.8); }
-            #prev-btn { left: 5px; }
-            #next-btn { right: 5px; }
+    @media (max-width: 768px) {
+        .cyber-carousel-wrapper { height: 300px; }
+        .carousel-card { 
+            width: 240px;  /* más chico que antes */
+            height: 150px; 
         }
-    </style>
+        .carousel-card.card-left { 
+            transform: translateY(-50%) translateX(-90%) scale(0.8); 
+        }
+        .carousel-card.card-right { 
+            transform: translateY(-50%) translateX(-10%) scale(0.8); 
+        }
+        #prev-btn { left: 5px; }
+        #next-btn { right: 5px; }
+    }
+</style>
+
 </head>
 <body class="overflow-x-hidden">
 
