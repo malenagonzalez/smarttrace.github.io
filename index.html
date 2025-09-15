@@ -1,277 +1,320 @@
 <!DOCTYPE html>
-<html lang="es" class="dark">
+<html lang="es" class="scroll-smooth dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartTrace - Plataforma de Visión Industrial</title>
+    <title>SmartTrace - Soluciones de Visión Inteligente</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --color-primary: #3b82f6;
-            --color-primary-light: #60a5fa;
-            --color-critical: #ef4444;
-            --color-high: #f97316;
-            --color-medium: #eab308;
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0f172a; /* slate-900 */
-            color: #e2e8f0; /* slate-200 */
-        }
-        .glassmorphism {
-            background: rgba(30, 41, 59, 0.6); /* slate-800 with opacity */
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(51, 65, 85, 0.5); /* slate-700 with opacity */
-        }
-        /* Custom scrollbar */
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: #1e293b; }
-        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
-        .sidebar-icon { width: 24px; height: 24px; }
-        .nav-item.active { background-color: var(--color-primary); color: white; }
-        .nav-item.active svg { color: white; }
-        .animate-pulse-fast { animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-        @keyframes pulse { 50% { opacity: .5; } }
-        
-        .kpi-bump { transform: scale(1.1); transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+    /* Estilos Generales y de Landing Page */
+    :root {
+        --color-primary: #3b82f6;
+        --color-primary-light: #60a5fa;
+        --color-critical: #ef4444;
+        --color-high: #f97316;
+        --color-medium: #eab308;
+    }
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #0a0a0a;
+        color: #e5e7eb;
+    }
+    .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .gradient-text {
+        background: linear-gradient(90deg, #3b82f6, #60a5fa, #93c5fd);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-fill-color: transparent;
+    }
+    .gradient-btn {
+        background-image: linear-gradient(to right, #3b82f6 0%, #60a5fa 50%, #3b82f6 100%);
+        background-size: 200% auto;
+        transition: all 0.3s ease-in-out;
+    }
+    .gradient-btn:hover {
+        background-position: right center;
+    }
+    .card-bg {
+        background-color: rgba(23, 23, 23, 0.5);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(59, 130, 246, 0.2);
+    }
+    
+    /* --- Cyberpunk Carousel Styles --- */
+    .cyber-carousel-wrapper {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem 0;
+        height: 420px;
+    }
+    .cyber-carousel-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+    .cyber-carousel {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+    .carousel-card {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 450px;
+        height: 260px;
+        border-radius: 12px;
+        overflow: hidden;
+        transition: transform 0.5s ease, opacity 0.5s ease, z-index 0.5s;
+        opacity: 0;
+        transform: translateY(-50%) translateX(-50%) scale(0.5);
+        z-index: 1;
+    }
+    .carousel-card.card-center {
+        opacity: 1;
+        transform: translateY(-50%) translateX(-50%) scale(1.1);
+        z-index: 10;
+    }
+    .carousel-card.card-left {
+        opacity: 0.6;
+        transform: translateY(-50%) translateX(-115%) scale(0.9);
+        z-index: 5;
+    }
+    .carousel-card.card-right {
+        opacity: 0.6;
+        transform: translateY(-50%) translateX(15%) scale(0.9);
+        z-index: 5;
+    }
+    .carousel-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 12px;
+        border: 2px solid rgba(59, 130, 246, 0.3);
+        box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
+        transition: all 0.5s ease;
+    }
+    .carousel-card.card-center img {
+        border-color: #60a5fa;
+        box-shadow: 0 0 20px #3b82f6, 0 0 35px #3b82f6;
+    }
+    .card-caption {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 1rem;
+        background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+        color: #e5e7eb;
+        font-weight: 600;
+        text-align: center;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .carousel-card.card-center .card-caption {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .carousel-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 20;
+        width: 40px;
+        height: 40px;
+        background: rgba(10, 10, 10, 0.5);
+        border: 1px solid #3b82f6;
+        border-radius: 50%;
+        color: #60a5fa;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+    }
+    .carousel-nav:hover {
+        background: #3b82f6;
+        color: white;
+        box-shadow: 0 0 20px #3b82f6;
+    }
+    #prev-btn { left: 15%; }
+    #next-btn { right: 15%; }
 
-        /* Toast & Banner animations */
-        .fade-in-up {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.3s forwards;
+    @media (max-width: 768px) {
+        .cyber-carousel-wrapper { height: 300px; }
+        .carousel-card { 
+            width: 240px;
+            height: 150px; 
         }
-        .fade-out-down {
-            opacity: 1;
-            transform: translateY(0);
-            animation: fadeOutDown 0.3s forwards;
+        .carousel-card.card-left { 
+            transform: translateY(-50%) translateX(-90%) scale(0.8); 
         }
-        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeOutDown { to { opacity: 0; transform: translateY(20px); } }
-    </style>
+        .carousel-card.card-right { 
+            transform: translateY(-50%) translateX(-10%) scale(0.8); 
+        }
+        #prev-btn { left: 5px; }
+        #next-btn { right: 5px; }
+    }
+
+    /* Estilos de la Aplicación (Dashboard) */
+    .app-body {
+        font-family: 'Inter', sans-serif;
+        background-color: #0f172a; /* slate-900 */
+        color: #e2e8f0; /* slate-200 */
+    }
+    .glassmorphism {
+        background: rgba(30, 41, 59, 0.6); /* slate-800 with opacity */
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(51, 65, 85, 0.5); /* slate-700 with opacity */
+    }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #1e293b; }
+    ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+    .sidebar-icon { width: 24px; height: 24px; }
+    .nav-item.active { background-color: var(--color-primary); color: white; }
+    .nav-item.active svg { color: white; }
+    .animate-pulse-fast { animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+    @keyframes pulse { 50% { opacity: .5; } }
+    .kpi-bump { transform: scale(1.1); transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+    .fade-in-up {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.3s forwards;
+    }
+    .fade-out-down {
+        opacity: 1;
+        transform: translateY(0);
+        animation: fadeOutDown 0.3s forwards;
+    }
+    @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeOutDown { to { opacity: 0; transform: translateY(20px); } }
+</style>
+
 </head>
-<body class="antialiased text-slate-300">
-    <!-- Pantalla de Login -->
-    <div id="login-screen" class="flex items-center justify-center h-screen bg-slate-900">
-        <div class="w-full max-w-md p-8 space-y-8 glassmorphism rounded-xl">
-            <div class="flex flex-col items-center">
-                <svg class="h-16 w-16" viewBox="0 0 520 520" xmlns="http://www.w3.org/2000/svg">
-                  <defs>
-                    <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#cfd4d9"/><stop offset="50%" stop-color="#f3f4f5"/><stop offset="100%" stop-color="#a9afb4"/></linearGradient>
-                    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#60a5fa"/></linearGradient>
-                    <radialGradient id="lensIris" cx="40%" cy="38%" r="70%"><stop offset="0%" stop-color="#9ec5ff"/><stop offset="45%" stop-color="#567fbc"/><stop offset="100%" stop-color="#1b2940"/></radialGradient>
-                    <radialGradient id="lensInner" cx="48%" cy="50%" r="60%"><stop offset="0%" stop-color="#3a3f47"/><stop offset="100%" stop-color="#0b0f17"/></radialGradient>
-                  </defs>
-                  <g transform="translate(260,210)"><circle r="130" fill="none" stroke="url(#metal)" stroke-width="36" stroke-dasharray="720 160" stroke-linecap="butt"/><circle r="85" fill="none" stroke="url(#blue)" stroke-width="12"/><circle r="64" fill="url(#lensIris)" stroke="#0f172a" stroke-width="3" /><circle r="40" fill="url(#lensInner)"/><circle r="16" fill="#000"/><circle cx="14" cy="-16" r="7" fill="#fff" opacity="0.95"/><circle cx="6" cy="-7" r="3.2" fill="#fff" opacity="0.6"/><g transform="translate(96,40) rotate(25)"><rect x="0" y="0" width="26" height="26" fill="url(#blue)"/><rect x="30" y="-18" width="26" height="26" fill="url(#blue)"/><rect x="30" y="18" width="26" height="26" fill="url(#blue)"/><rect x="60" y="0" width="26" height="26" fill="url(#blue)"/></g></g>
-                </svg>
-                <h1 class="text-3xl font-bold text-white mt-4">SmartTrace</h1>
-                <p class="text-slate-400">Plataforma de Visión Industrial</p>
+<body class="overflow-x-hidden antialiased text-slate-300">
+
+    <!-- =========== CONTENEDOR DE LA LANDING PAGE =========== -->
+    <div id="landing-container">
+        <header id="header" class="fixed top-0 left-0 right-0 z-50 bg-black/30 backdrop-blur-sm">
+            <div class="container mx-auto px-6 py-5 flex justify-between items-center">
+              <a href="#" class="flex items-center gap-2 select-none">
+                <svg class="h-10 w-10 md:h-11 md:w-11 lg:h-12 lg:w-12" viewBox="0 0 520 520" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="metal" x1="0" y1="0" x2="1" y2="1"><stop offset="0%"  stop-color="#cfd4d9"/><stop offset="50%" stop-color="#f3f4f5"/><stop offset="100%" stop-color="#a9afb4"/></linearGradient><linearGradient id="blue" x1="0" y1="0" x2="1" y2="0"><stop offset="0%"  stop-color="#3b82f6"/><stop offset="100%" stop-color="#60a5fa"/></linearGradient><radialGradient id="lensIris" cx="40%" cy="38%" r="70%"><stop offset="0%" stop-color="#9ec5ff"/><stop offset="45%" stop-color="#567fbc"/><stop offset="100%" stop-color="#1b2940"/></radialGradient><radialGradient id="lensInner" cx="48%" cy="50%" r="60%"><stop offset="0%" stop-color="#3a3f47"/><stop offset="100%" stop-color="#0b0f17"/></radialGradient></defs><g transform="translate(260,210)"><circle r="130" fill="none" stroke="url(#metal)" stroke-width="36" stroke-dasharray="720 160" stroke-linecap="butt"/><circle r="85" fill="none" stroke="url(#blue)" stroke-width="12"/><circle r="64" fill="url(#lensIris)" stroke="#0f172a" stroke-width="3" /><circle r="40" fill="url(#lensInner)"/><circle r="16" fill="#000"/><circle cx="14" cy="-16" r="7" fill="#fff" opacity="0.95"/><circle cx="6" cy="-7" r="3.2" fill="#fff" opacity="0.6"/><g transform="translate(96,40) rotate(25)"><rect x="0" y="0" width="26" height="26" fill="url(#blue)"/><rect x="30" y="-18" width="26" height="26" fill="url(#blue)"/><rect x="30" y="18" width="26" height="26" fill="url(#blue)"/><rect x="60" y="0" width="26" height="26" fill="url(#blue)"/></g></g></svg>
+                <span class="font-semibold tracking-tight text-[18px] md:text-[20px] lg:text-[22px]"><span class="text-gray-300">Smart</span><span class="text-blue-400 font-extrabold">Trace</span></span>
+              </a>
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="#solucion" class="text-gray-300 hover:text-blue-400 transition">Solución</a>
+                    <a href="#proceso" class="text-gray-300 hover:text-blue-400 transition">Proceso</a>
+                    <a href="#equipo" class="text-gray-300 hover:text-blue-400 transition">Equipo</a>
+                    <a href="#precios" class="text-gray-300 hover:text-blue-400 transition">Planes</a>
+                </nav>
+                <div class="hidden md:flex items-center space-x-4">
+                     <a href="#contacto" class="text-gray-300 hover:text-blue-400 transition font-semibold py-2 px-5">Hablemos</a>
+                    <button id="login-btn-desktop" class="gradient-btn text-white font-semibold py-2 px-5 rounded-lg">Ingresar</button>
+                </div>
+                <button id="mobile-menu-button" class="md:hidden text-gray-300 focus:outline-none"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg></button>
             </div>
-            <form id="login-form" class="space-y-6">
-                <div>
-                    <label for="email" class="text-sm font-medium text-slate-300">Email</label>
-                    <input type="email" id="email" value="volkswagen@smarttrace.com" required class="mt-1 block w-full bg-slate-800 border border-slate-700 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+                <a href="#solucion" class="block py-2 text-gray-300 hover:text-blue-400">Solución</a>
+                <a href="#proceso" class="block py-2 text-gray-300 hover:text-blue-400">Proceso</a>
+                <a href="#equipo" class="block py-2 text-gray-300 hover:text-blue-400">Equipo</a>
+                <a href="#precios" class="block py-2 text-gray-300 hover:text-blue-400">Planes</a>
+                <a href="#contacto" class="block py-2 text-gray-300 hover:text-blue-400">Hablemos</a>
+                 <button id="login-btn-mobile" class="w-full mt-2 gradient-btn text-white font-semibold text-center py-2 px-5 rounded-lg transition">Ingresar</button>
+            </div>
+        </header>
+
+        <main>
+            <section class="min-h-screen flex flex-col items-center justify-center text-center pt-32 relative overflow-hidden">
+                <div class="absolute inset-0 bg-grid-blue-500/10 [mask-image:linear-gradient(to_bottom,white_5%,transparent_80%)] -z-10"></div>
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40rem] h-[40rem] bg-blue-800/30 rounded-full blur-3xl animate-pulse -z-10"></div>
+                <div class="mb-8 flex justify-center z-10">
+                    <svg class="w-56 h-56 sm:w-64 sm:h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 drop-shadow-[0_12px_40px_rgba(59,130,246,0.28)]" viewBox="0 0 520 520" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="metal2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#cfd4d9"/><stop offset="50%" stop-color="#f3f4f5"/><stop offset="100%" stop-color="#a9afb4"/></linearGradient><linearGradient id="blue2" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#60a5fa"/></linearGradient><radialGradient id="lensIris2" cx="40%" cy="38%" r="70%"><stop offset="0%" stop-color="#9ec5ff"/><stop offset="45%" stop-color="#567fbc"/><stop offset="100%" stop-color="#1b2940"/></radialGradient><radialGradient id="lensInner2" cx="48%" cy="50%" r="60%"><stop offset="0%" stop-color="#3a3f47"/><stop offset="100%" stop-color="#0b0f17"/></radialGradient></defs><g transform="translate(260,210)"><circle r="130" fill="none" stroke="url(#metal2)" stroke-width="36" stroke-dasharray="720 160" stroke-linecap="butt"/><circle r="85" fill="none" stroke="url(#blue2)" stroke-width="12"/><circle r="64" fill="url(#lensIris2)" stroke="#0f172a" stroke-width="3"/><circle r="40" fill="url(#lensInner2)"/><circle r="16" fill="#000"/><circle cx="14" cy="-16" r="7" fill="#fff" opacity="0.95"/><circle cx="6" cy="-7" r="3.2" fill="#fff" opacity="0.6"/><g transform="translate(96,40) rotate(25)"><rect x="0" y="0" width="26" height="26" fill="url(#blue2)"/><rect x="30" y="-18" width="26" height="26" fill="url(#blue2)"/><rect x="30" y="18" width="26" height="26" fill="url(#blue2)"/><rect x="60" y="0" width="26" height="26" fill="url(#blue2)"/></g></g></svg>
                 </div>
-                <div>
-                    <label for="password" class="text-sm font-medium text-slate-300">Contraseña</label>
-                    <div class="relative mt-1">
-                        <input type="password" id="password" value="demopass" required class="block w-full bg-slate-800 border border-slate-700 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10">
-                        <button type="button" id="toggle-password" class="absolute inset-y-0 right-0 px-3 flex items-center text-slate-400 hover:text-slate-200">
-                            <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                            </svg>
-                            <svg id="eye-slash-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274-4.057 5.064-7 9.542-7 .847 0 1.67.111 2.458.325m4.209 4.209A9.97 9.97 0 0122 12c-1.274 4.057-5.064 7-9.542 7a9.97 9.97 0 01-2.09-.275M1 1l22 22" />
-                            </svg>
-                        </button>
-                    </div>
+                <div class="z-10">
+                    <h1 class="text-4xl md:text-6xl lg:text-7xl font-black mb-4">Transformá tu empresa con <span class="gradient-text">Visión Inteligente</span></h1>
+                    <p class="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto mb-8">Detectá fallas, optimizá procesos y gestioná tu personal desde un mismo sistema con cámaras inteligentes, análisis en tiempo real y tableros unificados.</p>
+                    <a href="#solucion" class="gradient-btn text-white font-bold py-3 px-8 rounded-lg text-lg transform hover:scale-105">Descubrí cómo</a>
                 </div>
-                 <div>
-                    <label for="token" class="text-sm font-medium text-slate-300">Token de Acceso</label>
-                    <input type="password" id="token" value="9876543210" required class="mt-1 block w-full bg-slate-800 border border-slate-700 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </section>
+            <section id="solucion" class="py-20"><div class="container mx-auto px-6"><div class="text-center mb-12"><h2 class="text-3xl md:text-4xl font-bold reveal">Nuestra Solución</h2><p class="text-gray-400 mt-2 reveal" style="transition-delay: 0.1s;">Tecnología de vanguardia para potenciar tu negocio.</p></div><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"><div class="card-bg p-8 rounded-xl reveal"><div class="bg-blue-600/20 text-blue-400 w-12 h-12 rounded-lg flex items-center justify-center mb-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104l7.5 7.5-7.5 7.5" /></svg></div><h3 class="text-xl font-bold mb-2">Soluciones Flexibles</h3><p class="text-gray-400">Cámaras industriales en comodato, variadas según tu caso de uso: control de calidad, supervisión de personal o seguridad industrial.</p></div><div class="card-bg p-8 rounded-xl reveal" style="transition-delay: 0.2s;"><div class="bg-blue-600/20 text-blue-400 w-12 h-12 rounded-lg flex items-center justify-center mb-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg></div><h3 class="text-xl font-bold mb-2">Software y Datos</h3><p class="text-gray-400">Análisis en tiempo real, alertas automáticas y dashboard centralizado para decidir con datos y trazar cada incidente.</p></div><div class="card-bg p-8 rounded-xl reveal" style="transition-delay: 0.4s;"><div class="bg-blue-600/20 text-blue-400 w-12 h-12 rounded-lg flex items-center justify-center mb-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01M12 6v-1m0-1V4m0 2.01M12 14c1.657 0 3-.895 3-2s-1.343-2-3-2m0 8c-1.11 0-2.08-.402-2.599-1M12 14v1m0-1v-.01M12 16v1m0 1v1m0-2.01" /></svg></div><h3 class="text-xl font-bold mb-2">Servicio Incluido</h3><p class="text-gray-400">Instalación, mantenimiento, soporte y actualizaciones dentro de la suscripción. Sin inversión inicial grande.</p></div></div></div></section>
+            <section id="video" class="py-20 bg-black/50"><div class="container mx-auto px-6 text-center"><h2 class="text-3xl md:text-4xl font-bold reveal">Tecnología de visión inteligente: calidad asegurada, procesos optimizados y mayor productividad.</h2><p class="text-gray-400 mt-4 max-w-3xl mx-auto reveal" style="transition-delay: 0.1s;">Nuestras soluciones combinan cámaras en comodato, software de análisis y servicio integral para detectar fallas, supervisar personal y monitorear procesos en tiempo real.</p><div class="aspect-video max-w-4xl mx-auto mt-8 rounded-xl overflow-hidden shadow-2xl shadow-blue-500/20 reveal" style="transition-delay: 0.2s;"><iframe class="w-full h-full" src="https://www.youtube.com/embed/VmZc-id5iC0?autoplay=1&mute=1&loop=1&playlist=VmZc-id5iC0&controls=0&showinfo=0&rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div></section>
+            <section id="carousel" class="py-20"><div class="cyber-carousel-wrapper"><button id="prev-btn" class="carousel-nav">&lt;</button><div class="cyber-carousel-container"><div id="cyber-carousel" class="cyber-carousel"><div class="carousel-card"><img src="https://tipteh.com/wp-content/uploads/2024/12/racer-2-S-Line-Scan-Camera-Basler_featured.webp" alt="Control de Calidad"><div class="card-caption">Control de Calidad</div></div><div class="carousel-card"><img src="https://mb.cision.com/Public/17133/Cnct_FtrdImg_Dj_3149243/b1a03638f6403236_featured.jpg" alt="Gestión de Personal"><div class="card-caption">Gestión de Personal</div></div><div class="carousel-card"><img src="https://recab.com/wp-content/uploads/2022/02/Keyence-CV-X4.jpg" alt="Seguridad Industrial"><div class="card-caption">Seguridad Industrial</div></div></div></div><button id="next-btn" class="carousel-nav">&gt;</button></div></section>
+            <section id="proceso" class="py-20 bg-black/50"><div class="container mx-auto px-6"><div class="text-center mb-12"><h2 class="text-3xl md:text-4xl font-bold reveal">Implementación Simple</h2><p class="text-gray-400 mt-2 reveal" style="transition-delay: 0.1s;">Nuestro camino para potenciar tu empresa.</p></div><div class="relative"><div class="hidden md:block absolute top-5 left-0 w-full h-0.5 bg-blue-900/50"></div><div class="grid grid-cols-1 md:grid-cols-4 gap-12"><div class="text-center reveal"><div class="w-12 h-12 mx-auto bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl z-10 relative mb-4">1</div><h3 class="font-bold text-lg mb-1">Relevamiento</h3><p class="text-gray-400 text-sm">Identificamos tus objetivos (control de calidad, seguridad, productividad, etc.) y definimos los puntos estratégicos de monitoreo.</p></div><div class="text-center reveal" style="transition-delay: 0.2s;"><div class="w-12 h-12 mx-auto bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl z-10 relative mb-4">2</div><h3 class="font-bold text-lg mb-1">Configuración</h3><p class="text-gray-400 text-sm">Instalamos y adaptamos las cámaras inteligentes y el sistema de análisis sin interrumpir tus operaciones.</p></div><div class="text-center reveal" style="transition-delay: 0.4s;"><div class="w-12 h-12 mx-auto bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl z-10 relative mb-4">3</div><h3 class="font-bold text-lg mb-1">Activación</h3><p class="text-gray-400 text-sm">Integramos la solución al dashboard centralizado y capacitamos a tu equipo.</p></div><div class="text-center reveal" style="transition-delay: 0.6s;"><div class="w-12 h-12 mx-auto bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl z-10 relative mb-4">4</div><h3 class="font-bold text-lg mb-1">Optimización Continua</h3><p class="text-gray-400 text-sm">Acompañamos con soporte técnico, actualizaciones y mejoras en base a tus necesidades.</p></div></div></div></div></section>
+            <section id="equipo" class="py-20"><div class="container mx-auto px-6"><div class="text-center mb-12"><h2 class="text-3xl md:text-4xl font-bold reveal">Nuestro Equipo</h2><p class="text-gray-400 mt-2 reveal" style="transition-delay: 0.1s;">Expertos apasionados por la eficiencia industrial.</p></div><div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 text-center"><div class="reveal"><div class="w-24 h-24 mx-auto rounded-full bg-blue-900/50 mb-2 flex items-center justify-center"><span class="text-3xl">EM</span></div><h4 class="font-bold">Emiliano Manganiello</h4><p class="text-sm text-blue-400">Fundador</p></div><div class="reveal" style="transition-delay: 0.1s;"><div class="w-24 h-24 mx-auto rounded-full bg-blue-900/50 mb-2 flex items-center justify-center"><span class="text-3xl">GN</span></div><h4 class="font-bold">Guido Naselli</h4><p class="text-sm text-blue-400">Gerente / Coordinador</p></div><div class="reveal" style="transition-delay: 0.2s;"><div class="w-24 h-24 mx-auto rounded-full bg-blue-900/50 mb-2 flex items-center justify-center"><span class="text-3xl">MO</span></div><h4 class="font-bold">Marcos Ostertag</h4><p class="text-sm text-blue-400">Técnico especialista</p></div><div class="reveal" style="transition-delay: 0.3s;"><div class="w-24 h-24 mx-auto rounded-full bg-blue-900/50 mb-2 flex items-center justify-center"><span class="text-3xl">MG</span></div><h4 class="font-bold">Malena Gonzalez</h4><p class="text-sm text-blue-400">Creativa / Innovadora</p></div><div class="reveal" style="transition-delay: 0.4s;"><div class="w-24 h-24 mx-auto rounded-full bg-blue-900/50 mb-2 flex items-center justify-center"><span class="text-3xl">MD</span></div><h4 class="font-bold">María Diamante</h4><p class="text-sm text-blue-400">Analista / Investigadora</p></div><div class="reveal" style="transition-delay: 0.5s;"><div class="w-24 h-24 mx-auto rounded-full bg-blue-900/50 mb-2 flex items-center justify-center"><span class="text-3xl">AZ</span></div><h4 class="font-bold">Abel Zabala</h4><p class="text-sm text-blue-400">Mentor</p></div></div></div></section>
+            <section id="precios" class="py-20 bg-black/50"><div class="container mx-auto px-6"><div class="text-center max-w-3xl mx-auto"><h2 class="text-3xl md:text-4xl font-bold reveal">Soluciones a tu Medida</h2><p class="text-gray-400 mt-4 reveal" style="transition-delay: 0.1s;">Ofrecemos soluciones de visión inteligente adaptadas a las necesidades de cada empresa. A través de un modelo flexible de suscripción, brindamos acceso a tecnología de análisis con cámaras inteligentes que permiten desde control de calidad hasta gestión de personal, sin grandes inversiones iniciales.</p><div class="card-bg rounded-xl p-8 mt-8 reveal" style="transition-delay: 0.2s;"><h3 class="text-2xl font-bold gradient-text">Planes Personalizados</h3><p class="text-gray-300 mt-4">Diseñamos la solución a medida de tu empresa, desde el control de calidad en la producción hasta la supervisión de personal y procesos. Todos los planes incluyen instalación, acceso al dashboard y soporte técnico completo.</p><a href="#contacto" class="mt-6 inline-block gradient-btn text-white font-bold py-3 px-8 rounded-lg text-lg transform hover:scale-105">Solicitar Cotización</a></div></div></div></section>
+            <section id="contacto" class="py-20"><div class="container mx-auto px-6"><div class="text-center mb-12"><h2 class="text-3xl md:text-4xl font-bold reveal">¿Listo para transformar tu empresa?</h2><p class="text-gray-400 mt-2 max-w-2xl mx-auto reveal" style="transition-delay: 0.1s;">Contactanos para un diagnóstico sin cargo. Estamos para ayudarte a construir el futuro de tu negocio.</p></div><div class="max-w-xl mx-auto"><form id="contact-form" class="space-y-6 reveal"><div><input type="text" name="name" placeholder="Tu nombre" class="w-full bg-gray-900/50 border border-blue-800/50 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition" required></div><div><input type="email" name="email" placeholder="Tu email" class="w-full bg-gray-900/50 border border-blue-800/50 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition" required></div><div><textarea name="message" rows="5" placeholder="Contanos sobre tu empresa y tus desafíos..." class="w-full bg-gray-900/50 border border-blue-800/50 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition" required></textarea></div><div class="text-center"><button type="submit" class="gradient-btn text-white font-bold py-3 px-12 rounded-lg text-lg transform hover:scale-105">Enviar Mensaje</button><p id="form-success-message" class="text-green-400 mt-4 opacity-0 transition-opacity duration-300">¡Mensaje enviado con éxito!</p></div></form></div></div></section>
+        </main>
+        <footer class="bg-black py-8"><div class="container mx-auto px-6 text-center text-gray-500"><p>&copy; 2025 SmartTrace. Todos los derechos reservados.</p></div></footer>
+    </div>
+    
+    <!-- =========== PANTALLA DE LOGIN (inicialmente oculta) =========== -->
+    <div id="login-screen" class="hidden">
+        <div class="flex items-center justify-center h-screen bg-slate-900 app-body">
+            <div class="w-full max-w-md p-8 space-y-8 glassmorphism rounded-xl">
+                <div class="flex flex-col items-center">
+                    <svg class="h-16 w-16" viewBox="0 0 520 520" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="metal-login" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#cfd4d9"/><stop offset="50%" stop-color="#f3f4f5"/><stop offset="100%" stop-color="#a9afb4"/></linearGradient><linearGradient id="blue-login" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#60a5fa"/></linearGradient><radialGradient id="lensIris-login" cx="40%" cy="38%" r="70%"><stop offset="0%" stop-color="#9ec5ff"/><stop offset="45%" stop-color="#567fbc"/><stop offset="100%" stop-color="#1b2940"/></radialGradient><radialGradient id="lensInner-login" cx="48%" cy="50%" r="60%"><stop offset="0%" stop-color="#3a3f47"/><stop offset="100%" stop-color="#0b0f17"/></radialGradient></defs><g transform="translate(260,210)"><circle r="130" fill="none" stroke="url(#metal-login)" stroke-width="36" stroke-dasharray="720 160" stroke-linecap="butt"/><circle r="85" fill="none" stroke="url(#blue-login)" stroke-width="12"/><circle r="64" fill="url(#lensIris-login)" stroke="#0f172a" stroke-width="3" /><circle r="40" fill="url(#lensInner-login)"/><circle r="16" fill="#000"/><circle cx="14" cy="-16" r="7" fill="#fff" opacity="0.95"/><circle cx="6" cy="-7" r="3.2" fill="#fff" opacity="0.6"/><g transform="translate(96,40) rotate(25)"><rect x="0" y="0" width="26" height="26" fill="url(#blue-login)"/><rect x="30" y="-18" width="26" height="26" fill="url(#blue-login)"/><rect x="30" y="18" width="26" height="26" fill="url(#blue-login)"/><rect x="60" y="0" width="26" height="26" fill="url(#blue-login)"/></g></g></svg>
+                    <h1 class="text-3xl font-bold text-white mt-4">SmartTrace</h1>
+                    <p class="text-slate-400">Plataforma de Visión Industrial</p>
                 </div>
-                <button type="submit" class="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-semibold transition-colors">Ingresar</button>
-            </form>
+                <form id="login-form" class="space-y-6">
+                    <div><label for="email" class="text-sm font-medium text-slate-300">Email</label><input type="email" id="email" value="volkswagen@smarttrace.com" required class="mt-1 block w-full bg-slate-800 border border-slate-700 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"></div>
+                    <div><label for="password" class="text-sm font-medium text-slate-300">Contraseña</label><div class="relative mt-1"><input type="password" id="password" value="demopass" required class="block w-full bg-slate-800 border border-slate-700 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"><button type="button" id="toggle-password" class="absolute inset-y-0 right-0 px-3 flex items-center text-slate-400 hover:text-slate-200"><svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg><svg id="eye-slash-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274-4.057 5.064-7 9.542-7 .847 0 1.67.111 2.458.325m4.209 4.209A9.97 9.97 0 0122 12c-1.274 4.057-5.064 7-9.542 7a9.97 9.97 0 01-2.09-.275M1 1l22 22" /></svg></button></div></div>
+                    <div><label for="token" class="text-sm font-medium text-slate-300">Token de Acceso</label><input type="password" id="token" value="9876543210" required class="mt-1 block w-full bg-slate-800 border border-slate-700 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"></div>
+                    <button type="submit" class="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-semibold transition-colors">Ingresar</button>
+                </form>
+            </div>
         </div>
     </div>
 
-    <!-- Contenedor Principal de la App (inicialmente oculto) -->
+    <!-- =========== CONTENEDOR DE LA APP (inicialmente oculto) =========== -->
     <div id="main-app" class="hidden">
-        <div id="app" class="flex h-screen overflow-hidden">
-            <!-- Barra lateral izquierda -->
-            <nav id="sidebar-left" class="w-20 lg:w-64 bg-slate-900/70 border-r border-slate-800 p-4 flex flex-col transition-all duration-300">
-                <div class="flex items-center gap-3 mb-8 px-2">
-                    <svg class="h-10 w-10 md:h-11 md:w-11 lg:h-12 lg:w-12 flex-shrink-0" viewBox="0 0 520 520" xmlns="http://www.w3.org/2000/svg">
-                      <defs>
-                        <linearGradient id="metal-app" x1="0" y1="0" x2="1" y2="1">
-                          <stop offset="0%" stop-color="#cfd4d9"/>
-                          <stop offset="50%" stop-color="#f3f4f5"/>
-                          <stop offset="100%" stop-color="#a9afb4"/>
-                        </linearGradient>
-                        <linearGradient id="blue-app" x1="0" y1="0" x2="1" y2="0">
-                          <stop offset="0%" stop-color="#3b82f6"/>
-                          <stop offset="100%" stop-color="#60a5fa"/>
-                        </linearGradient>
-                        <radialGradient id="lensIris-app" cx="40%" cy="38%" r="70%">
-                          <stop offset="0%" stop-color="#9ec5ff"/>
-                          <stop offset="45%" stop-color="#567fbc"/>
-                          <stop offset="100%" stop-color="#1b2940"/>
-                        </radialGradient>
-                        <radialGradient id="lensInner-app" cx="48%" cy="50%" r="60%">
-                          <stop offset="0%" stop-color="#3a3f47"/>
-                          <stop offset="100%" stop-color="#0b0f17"/>
-                        </radialGradient>
-                      </defs>
-                      <g transform="translate(260,210)">
-                        <circle r="130" fill="none" stroke="url(#metal-app)" stroke-width="36"
-                                stroke-dasharray="720 160" stroke-linecap="butt"/>
-                        <circle r="85" fill="none" stroke="url(#blue-app)" stroke-width="12"/>
-                        <circle r="64" fill="url(#lensIris-app)" stroke="#0f172a" stroke-width="3" />
-                        <circle r="40" fill="url(#lensInner-app)"/>
-                        <circle r="16" fill="#000"/>
-                        <circle cx="14" cy="-16" r="7" fill="#fff" opacity="0.95"/>
-                        <circle cx="6" cy="-7" r="3.2" fill="#fff" opacity="0.6"/>
-                        <g transform="translate(96,40) rotate(25)">
-                          <rect x="0" y="0" width="26" height="26" fill="url(#blue-app)"/>
-                          <rect x="30" y="-18" width="26" height="26" fill="url(#blue-app)"/>
-                          <rect x="30" y="18" width="26" height="26" fill="url(#blue-app)"/>
-                          <rect x="60" y="0" width="26" height="26" fill="url(#blue-app)"/>
-                        </g>
-                      </g>
-                    </svg>
-                    <h1 class="text-xl font-bold text-white hidden lg:block">SmartTrace</h1>
-                </div>
-
-                <ul class="space-y-2 flex-grow">
-                    <li><a href="#" class="nav-item flex items-center gap-4 p-3 rounded-lg text-slate-300 hover:bg-slate-700 transition-colors duration-200" data-view="en-vivo"><svg class="sidebar-icon flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg><span class="hidden lg:block">En vivo</span></a></li>
-                    <li><a href="#" class="nav-item flex items-center gap-4 p-3 rounded-lg text-slate-300 hover:bg-slate-700 transition-colors duration-200" data-view="alertas"><svg class="sidebar-icon flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg><span class="hidden lg:block">Alertas</span></a></li>
-                    <li><a href="#" class="nav-item flex items-center gap-4 p-3 rounded-lg text-slate-300 hover:bg-slate-700 transition-colors duration-200" data-view="reportes"><svg class="sidebar-icon flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg><span class="hidden lg:block">Reportes</span></a></li>
-                    <li><a href="#" class="nav-item flex items-center gap-4 p-3 rounded-lg text-slate-300 hover:bg-slate-700 transition-colors duration-200" data-view="configuracion"><svg class="sidebar-icon flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg><span class="hidden lg:block">Configuración</span></a></li>
-                </ul>
-                <!-- Botón de Logout -->
-                <div class="mt-auto">
-                     <a href="#" id="logout-btn" class="nav-item flex items-center gap-4 p-3 rounded-lg text-slate-400 hover:bg-red-500/20 hover:text-red-300 transition-colors duration-200">
-                        <svg class="sidebar-icon flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                        <span class="hidden lg:block">Cerrar Sesión</span>
-                    </a>
-                </div>
-            </nav>
-
-            <main class="flex-1 flex flex-col bg-slate-900 overflow-hidden">
-                <header class="flex-shrink-0 bg-slate-900/70 border-b border-slate-800 p-4 flex items-center justify-between">
-                    <div class="flex items-center gap-4">
-                        <button id="toggle-sidebar-right" class="md:hidden p-2 rounded-md hover:bg-slate-700"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
-                        <div class="relative"><svg class="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg><input type="text" placeholder="Buscar cámaras, alertas..." class="bg-slate-800 border border-slate-700 rounded-lg py-2 pl-10 pr-4 w-64 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"></div>
+        <div class="app-body">
+            <div id="app" class="flex h-screen overflow-hidden">
+                <nav id="sidebar-left" class="w-20 lg:w-64 bg-slate-900/70 border-r border-slate-800 p-4 flex flex-col transition-all duration-300">
+                    <div class="flex items-center gap-3 mb-8 px-2">
+                        <svg class="h-10 w-10 md:h-11 md:w-11 lg:h-12 lg:w-12 flex-shrink-0" viewBox="0 0 520 520" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="metal-app" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#cfd4d9"/><stop offset="50%" stop-color="#f3f4f5"/><stop offset="100%" stop-color="#a9afb4"/></linearGradient><linearGradient id="blue-app" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#60a5fa"/></linearGradient><radialGradient id="lensIris-app" cx="40%" cy="38%" r="70%"><stop offset="0%" stop-color="#9ec5ff"/><stop offset="45%" stop-color="#567fbc"/><stop offset="100%" stop-color="#1b2940"/></radialGradient><radialGradient id="lensInner-app" cx="48%" cy="50%" r="60%"><stop offset="0%" stop-color="#3a3f47"/><stop offset="100%" stop-color="#0b0f17"/></radialGradient></defs><g transform="translate(260,210)"><circle r="130" fill="none" stroke="url(#metal-app)" stroke-width="36" stroke-dasharray="720 160" stroke-linecap="butt"/><circle r="85" fill="none" stroke="url(#blue-app)" stroke-width="12"/><circle r="64" fill="url(#lensIris-app)" stroke="#0f172a" stroke-width="3" /><circle r="40" fill="url(#lensInner-app)"/><circle r="16" fill="#000"/><circle cx="14" cy="-16" r="7" fill="#fff" opacity="0.95"/><circle cx="6" cy="-7" r="3.2" fill="#fff" opacity="0.6"/><g transform="translate(96,40) rotate(25)"><rect x="0" y="0" width="26" height="26" fill="url(#blue-app)"/><rect x="30" y="-18" width="26" height="26" fill="url(#blue-app)"/><rect x="30" y="18" width="26" height="26" fill="url(#blue-app)"/><rect x="60" y="0" width="26" height="26" fill="url(#blue-app)"/></g></g></svg>
+                        <h1 class="text-xl font-bold text-white hidden lg:block">SmartTrace</h1>
                     </div>
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg flex items-center gap-2 transition-colors duration-200">
-                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                        <span>Exportar CSV/PDF</span>
-                    </button>
-                </header>
-
-                <div id="views-container" class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
-                    <div id="skeleton-loader" class="hidden"><div class="grid grid-cols-1 md:grid-cols-2 gap-6 animate-pulse-fast"><div class="bg-slate-800 h-64 rounded-lg"></div><div class="bg-slate-800 h-64 rounded-lg"></div><div class="bg-slate-800 h-64 rounded-lg"></div><div class="bg-slate-800 h-64 rounded-lg"></div></div></div>
-
-                    <section id="view-en-vivo" class="view">
-                        <div class="flex flex-col md:flex-row gap-6">
-                            <div class="flex-1">
-                                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                                    <div class="glassmorphism p-4 rounded-lg"><p class="text-sm text-slate-400">Cámaras activas</p><p id="counter-cameras" class="text-2xl font-bold text-white transition-transform duration-200">0</p></div>
-                                    <div class="glassmorphism p-4 rounded-lg"><p class="text-sm text-slate-400">FPS promedio</p><p id="counter-fps" class="text-2xl font-bold text-white transition-transform duration-200">0.0</p></div>
-                                    <div class="glassmorphism p-4 rounded-lg"><p class="text-sm text-slate-400">Incidentes (1h)</p><p id="counter-incidents" class="text-2xl font-bold text-orange-400 transition-transform duration-200">0</p></div>
-                                    <div class="glassmorphism p-4 rounded-lg"><p class="text-sm text-slate-400">Disponibilidad (%)</p><p id="counter-availability" class="text-2xl font-bold text-green-400 transition-transform duration-200">100.0%</p></div>
-                                </div>
-                                <div id="no-events-banner" class="hidden bg-yellow-500/20 border border-yellow-500 text-yellow-300 px-4 py-3 rounded-lg relative mb-6" role="alert">
-                                    <strong class="font-bold">Atención:</strong>
-                                    <span class="block sm:inline"> No se han recibido nuevos eventos en los últimos 10 segundos.</span>
-                                </div>
-                                <div id="camera-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
-                            </div>
-                            <aside id="sidebar-right" class="w-full md:w-80 lg:w-96 flex-shrink-0 bg-slate-900/70 border-l border-slate-800 rounded-lg p-4 md:flex flex-col fixed md:relative top-0 right-0 h-full transform translate-x-full md:translate-x-0 transition-transform duration-300 z-40">
-                                <div class="flex items-center justify-between mb-4">
-                                    <h2 class="text-lg font-semibold text-white">Alertas en Tiempo Real</h2>
-                                    <button id="close-sidebar-right" class="md:hidden p-2 rounded-md hover:bg-slate-700"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg></button>
-                                </div>
-                                <div id="live-alert-feed" class="flex-1 overflow-y-auto space-y-3 pr-2">
-                                    <p class="text-sm text-slate-400 text-center py-8">Esperando alertas simuladas...</p>
-                                </div>
-                            </aside>
-                        </div>
-                    </section>
-
-                    <section id="view-alertas" class="view hidden">
-                        <h1 class="text-2xl font-bold mb-6">Gestión de Alertas</h1>
-                        <div class="glassmorphism p-4 rounded-lg mb-6 flex flex-wrap items-center gap-4">
-                            <input id="alert-search" type="text" placeholder="Buscar por tipo..." class="bg-slate-800 border border-slate-700 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <select id="alert-filter-severity" class="bg-slate-800 border border-slate-700 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"><option value="all">Toda Severidad</option><option value="Crítica">Crítica</option><option value="Alta">Alta</option><option value="Media">Media</option></select>
-                            <select id="alert-filter-status" class="bg-slate-800 border border-slate-700 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"><option value="all">Todo Estado</option><option value="Nueva">Nueva</option><option value="Reconocida">Reconocida</option><option value="Resuelta">Resuelta</option></select>
-                            <input id="alert-filter-date" type="date" class="bg-slate-800 border border-slate-700 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        </div>
-                        <div class="overflow-x-auto glassmorphism rounded-lg">
-                            <table class="w-full text-sm text-left text-slate-300">
-                                <thead class="text-xs text-slate-400 uppercase bg-slate-800/50"><tr><th scope="col" class="px-6 py-3">Timestamp</th><th scope="col" class="px-6 py-3">Cámara</th><th scope="col" class="px-6 py-3">Tipo</th><th scope="col" class="px-6 py-3">Severidad</th><th scope="col" class="px-6 py-3">Estado</th><th scope="col" class="px-6 py-3">Acciones</th></tr></thead>
-                                <tbody id="alerts-table-body"></tbody>
-                            </table>
-                        </div>
-                        <div id="alerts-pagination" class="flex justify-between items-center mt-4"></div>
-                    </section>
-
-                    <section id="view-reportes" class="view hidden">
-                        <div class="flex justify-between items-center mb-6">
-                            <h1 class="text-2xl font-bold">Reportes y Analíticas</h1>
-                            <button id="export-report-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg flex items-center gap-2"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>Exportar Reporte</button>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-                            <div class="glassmorphism p-5 rounded-lg"><h3 class="text-slate-400">Incidentes Totales</h3><p id="kpi-total-incidents" class="text-3xl font-bold text-white">0</p></div>
-                            <div class="glassmorphism p-5 rounded-lg"><h3 class="text-slate-400">MTTR (simulado)</h3><p id="kpi-mttr" class="text-3xl font-bold text-white">-- min</p></div>
-                            <div class="glassmorphism p-5 rounded-lg"><h3 class="text-slate-400">Disponibilidad (7d)</h3><p id="kpi-avail-7d" class="text-3xl font-bold text-white">100.0%</p></div>
-                            <div class="glassmorphism p-5 rounded-lg"><h3 class="text-slate-400">Cumplimiento EPP</h3><p id="kpi-epp" class="text-3xl font-bold text-white">--%</p></div>
-                        </div>
-                        <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
-                            <div class="glassmorphism p-5 rounded-lg xl:col-span-2"><h2 class="font-semibold mb-4">Incidentes por Hora (Últimas 24h)</h2><div class="h-64"><canvas id="incidents-by-hour-chart"></canvas></div></div>
-                            <div class="glassmorphism p-5 rounded-lg"><h2 class="font-semibold mb-4">Top 5 Cámaras con Incidentes</h2><div class="h-72"><canvas id="top-cameras-chart"></canvas></div></div>
-                            <div class="glassmorphism p-5 rounded-lg"><h2 class="font-semibold mb-4">Distribución por Tipo de Incidente</h2><div class="h-72 flex justify-center items-center"><canvas id="defect-distribution-chart"></canvas></div></div>
-                            <div class="glassmorphism p-5 rounded-lg xl:col-span-2"><h2 class="font-semibold mb-4">Incidentes por Cámara (Total)</h2><div id="incidents-per-camera-list" class="space-y-2 max-h-64 overflow-y-auto"></div></div>
-                        </div>
-                    </section>
-
-                    <section id="view-configuracion" class="view hidden">
-                        <h1 class="text-2xl font-bold mb-6">Configuración del Sistema</h1>
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                            <div class="glassmorphism p-6 rounded-lg"><h2 class="text-xl font-semibold mb-4">Gestión de Cámaras</h2><div id="camera-config-list" class="space-y-3 mb-4"></div><button id="add-new-camera-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg">Agregar Nueva Cámara</button></div>
-                            <div id="camera-form-container" class="glassmorphism p-6 rounded-lg hidden">
-                                 <h2 id="camera-form-title" class="text-xl font-semibold mb-4">Agregar Cámara</h2>
-                                 <form id="camera-form">
-                                    <input type="hidden" id="camera-id">
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div class="mb-4"><label for="camera-name" class="block text-sm font-medium text-slate-300 mb-1">Nombre</label><input type="text" id="camera-name" required class="w-full bg-slate-800 border border-slate-700 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"></div>
-                                        <div class="mb-4"><label for="camera-location" class="block text-sm font-medium text-slate-300 mb-1">Ubicación</label><input type="text" id="camera-location" required class="w-full bg-slate-800 border border-slate-700 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"></div>
-                                        <div class="mb-4"><label for="camera-fps" class="block text-sm font-medium text-slate-300 mb-1">FPS Objetivo</label><input type="number" id="camera-fps" value="10" min="1" max="30" required class="w-full bg-slate-800 border border-slate-700 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"></div>
-                                        <div class="mb-4"><label for="camera-prob" class="block text-sm font-medium text-slate-300 mb-1">Prob. Defecto (%)</label><input type="number" id="camera-prob" value="10" min="1" max="100" required class="w-full bg-slate-800 border border-slate-700 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"></div>
-                                    </div>
-                                     <div class="mb-4"><label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" id="camera-online" class="h-4 w-4 rounded bg-slate-700 border-slate-600 text-blue-600 focus:ring-blue-500"><span>Online</span></label></div>
-                                    <div class="flex gap-4"><button type="submit" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg">Guardar</button><button type="button" id="cancel-camera-form" class="flex-1 bg-slate-600 hover:bg-slate-700 text-white font-semibold py-2 px-4 rounded-lg">Cancelar</button></div>
-                                 </form>
-                            </div>
-                            <div class="glassmorphism p-6 rounded-lg lg:col-span-2"><h2 class="text-xl font-semibold mb-4">Tipos de Detección Activos</h2><div id="detection-types-toggles" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div></div>
-                            <div class="glassmorphism p-6 rounded-lg lg:col-span-2"><h2 class="text-xl font-semibold mb-4">Control de la Demo</h2>
-                                <div class="flex flex-wrap gap-4">
-                                    <button id="force-alert-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg">Forzar Alerta</button>
-                                    <button id="reset-demo-btn" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg">Restablecer Demo</button>
-                                </div>
-                                <p class="text-sm text-slate-400 mt-2">Restablecer limpiará todos los datos guardados y recargará la página.</p>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-            </main>
+                    <ul class="space-y-2 flex-grow">
+                        <li><a href="#" class="nav-item flex items-center gap-4 p-3 rounded-lg text-slate-300 hover:bg-slate-700 transition-colors duration-200" data-view="en-vivo"><svg class="sidebar-icon flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg><span class="hidden lg:block">En vivo</span></a></li>
+                        <li><a href="#" class="nav-item flex items-center gap-4 p-3 rounded-lg text-slate-300 hover:bg-slate-700 transition-colors duration-200" data-view="alertas"><svg class="sidebar-icon flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg><span class="hidden lg:block">Alertas</span></a></li>
+                        <li><a href="#" class="nav-item flex items-center gap-4 p-3 rounded-lg text-slate-300 hover:bg-slate-700 transition-colors duration-200" data-view="reportes"><svg class="sidebar-icon flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg><span class="hidden lg:block">Reportes</span></a></li>
+                        <li><a href="#" class="nav-item flex items-center gap-4 p-3 rounded-lg text-slate-300 hover:bg-slate-700 transition-colors duration-200" data-view="configuracion"><svg class="sidebar-icon flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066 2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg><span class="hidden lg:block">Configuración</span></a></li>
+                    </ul>
+                    <div class="mt-auto">
+                         <a href="#" id="logout-btn" class="nav-item flex items-center gap-4 p-3 rounded-lg text-slate-400 hover:bg-red-500/20 hover:text-red-300 transition-colors duration-200"><svg class="sidebar-icon flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg><span class="hidden lg:block">Cerrar Sesión</span></a>
+                    </div>
+                </nav>
+                <main class="flex-1 flex flex-col bg-slate-900 overflow-hidden">
+                    <header class="flex-shrink-0 bg-slate-900/70 border-b border-slate-800 p-4 flex items-center justify-between"><div class="flex items-center gap-4"><button id="toggle-sidebar-right" class="md:hidden p-2 rounded-md hover:bg-slate-700"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button><div class="relative"><svg class="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg><input type="text" placeholder="Buscar cámaras, alertas..." class="bg-slate-800 border border-slate-700 rounded-lg py-2 pl-10 pr-4 w-64 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"></div></div><button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg flex items-center gap-2 transition-colors duration-200"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg><span>Exportar CSV/PDF</span></button></header>
+                    <div id="views-container" class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
+                        <div id="skeleton-loader" class="hidden"><div class="grid grid-cols-1 md:grid-cols-2 gap-6 animate-pulse-fast"><div class="bg-slate-800 h-64 rounded-lg"></div><div class="bg-slate-800 h-64 rounded-lg"></div><div class="bg-slate-800 h-64 rounded-lg"></div><div class="bg-slate-800 h-64 rounded-lg"></div></div></div>
+                        <section id="view-en-vivo" class="view"><div class="flex flex-col md:flex-row gap-6"><div class="flex-1"><div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6"><div class="glassmorphism p-4 rounded-lg"><p class="text-sm text-slate-400">Cámaras activas</p><p id="counter-cameras" class="text-2xl font-bold text-white transition-transform duration-200">0</p></div><div class="glassmorphism p-4 rounded-lg"><p class="text-sm text-slate-400">FPS promedio</p><p id="counter-fps" class="text-2xl font-bold text-white transition-transform duration-200">0.0</p></div><div class="glassmorphism p-4 rounded-lg"><p class="text-sm text-slate-400">Incidentes (1h)</p><p id="counter-incidents" class="text-2xl font-bold text-orange-400 transition-transform duration-200">0</p></div><div class="glassmorphism p-4 rounded-lg"><p class="text-sm text-slate-400">Disponibilidad (%)</p><p id="counter-availability" class="text-2xl font-bold text-green-400 transition-transform duration-200">100.0%</p></div></div><div id="no-events-banner" class="hidden bg-yellow-500/20 border border-yellow-500 text-yellow-300 px-4 py-3 rounded-lg relative mb-6" role="alert"><strong class="font-bold">Atención:</strong><span class="block sm:inline"> No se han recibido nuevos eventos en los últimos 10 segundos.</span></div><div id="camera-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div></div><aside id="sidebar-right" class="w-full md:w-80 lg:w-96 flex-shrink-0 bg-slate-900/70 border-l border-slate-800 rounded-lg p-4 md:flex flex-col fixed md:relative top-0 right-0 h-full transform translate-x-full md:translate-x-0 transition-transform duration-300 z-40"><div class="flex items-center justify-between mb-4"><h2 class="text-lg font-semibold text-white">Alertas en Tiempo Real</h2><button id="close-sidebar-right" class="md:hidden p-2 rounded-md hover:bg-slate-700"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg></button></div><div id="live-alert-feed" class="flex-1 overflow-y-auto space-y-3 pr-2"><p class="text-sm text-slate-400 text-center py-8">Esperando alertas simuladas...</p></div></aside></div></section>
+                        <section id="view-alertas" class="view hidden"><h1 class="text-2xl font-bold mb-6">Gestión de Alertas</h1><div class="glassmorphism p-4 rounded-lg mb-6 flex flex-wrap items-center gap-4"><input id="alert-search" type="text" placeholder="Buscar por tipo..." class="bg-slate-800 border border-slate-700 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"><select id="alert-filter-severity" class="bg-slate-800 border border-slate-700 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"><option value="all">Toda Severidad</option><option value="Crítica">Crítica</option><option value="Alta">Alta</option><option value="Media">Media</option></select><select id="alert-filter-status" class="bg-slate-800 border border-slate-700 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"><option value="all">Todo Estado</option><option value="Nueva">Nueva</option><option value="Reconocida">Reconocida</option><option value="Resuelta">Resuelta</option></select><input id="alert-filter-date" type="date" class="bg-slate-800 border border-slate-700 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"></div><div class="overflow-x-auto glassmorphism rounded-lg"><table class="w-full text-sm text-left text-slate-300"><thead class="text-xs text-slate-400 uppercase bg-slate-800/50"><tr><th scope="col" class="px-6 py-3">Timestamp</th><th scope="col" class="px-6 py-3">Cámara</th><th scope="col" class="px-6 py-3">Tipo</th><th scope="col" class="px-6 py-3">Severidad</th><th scope="col" class="px-6 py-3">Estado</th><th scope="col" class="px-6 py-3">Acciones</th></tr></thead><tbody id="alerts-table-body"></tbody></table></div><div id="alerts-pagination" class="flex justify-between items-center mt-4"></div></section>
+                        <section id="view-reportes" class="view hidden"><div class="flex justify-between items-center mb-6"><h1 class="text-2xl font-bold">Reportes y Analíticas</h1><button id="export-report-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg flex items-center gap-2"><svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>Exportar Reporte</button></div><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6"><div class="glassmorphism p-5 rounded-lg"><h3 class="text-slate-400">Incidentes Totales</h3><p id="kpi-total-incidents" class="text-3xl font-bold text-white">0</p></div><div class="glassmorphism p-5 rounded-lg"><h3 class="text-slate-400">MTTR (simulado)</h3><p id="kpi-mttr" class="text-3xl font-bold text-white">-- min</p></div><div class="glassmorphism p-5 rounded-lg"><h3 class="text-slate-400">Disponibilidad (7d)</h3><p id="kpi-avail-7d" class="text-3xl font-bold text-white">100.0%</p></div><div class="glassmorphism p-5 rounded-lg"><h3 class="text-slate-400">Cumplimiento EPP</h3><p id="kpi-epp" class="text-3xl font-bold text-white">--%</p></div></div><div class="grid grid-cols-1 xl:grid-cols-2 gap-6"><div class="glassmorphism p-5 rounded-lg xl:col-span-2"><h2 class="font-semibold mb-4">Incidentes por Hora (Últimas 24h)</h2><div class="h-64"><canvas id="incidents-by-hour-chart"></canvas></div></div><div class="glassmorphism p-5 rounded-lg"><h2 class="font-semibold mb-4">Top 5 Cámaras con Incidentes</h2><div class="h-72"><canvas id="top-cameras-chart"></canvas></div></div><div class="glassmorphism p-5 rounded-lg"><h2 class="font-semibold mb-4">Distribución por Tipo de Incidente</h2><div class="h-72 flex justify-center items-center"><canvas id="defect-distribution-chart"></canvas></div></div><div class="glassmorphism p-5 rounded-lg xl:col-span-2"><h2 class="font-semibold mb-4">Incidentes por Cámara (Total)</h2><div id="incidents-per-camera-list" class="space-y-2 max-h-64 overflow-y-auto"></div></div></div></section>
+                        <section id="view-configuracion" class="view hidden"><h1 class="text-2xl font-bold mb-6">Configuración del Sistema</h1><div class="grid grid-cols-1 lg:grid-cols-2 gap-8"><div class="glassmorphism p-6 rounded-lg"><h2 class="text-xl font-semibold mb-4">Gestión de Cámaras</h2><div id="camera-config-list" class="space-y-3 mb-4"></div><button id="add-new-camera-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg">Agregar Nueva Cámara</button></div><div id="camera-form-container" class="glassmorphism p-6 rounded-lg hidden"><h2 id="camera-form-title" class="text-xl font-semibold mb-4">Agregar Cámara</h2><form id="camera-form"><input type="hidden" id="camera-id"><div class="grid grid-cols-1 md:grid-cols-2 gap-4"><div class="mb-4"><label for="camera-name" class="block text-sm font-medium text-slate-300 mb-1">Nombre</label><input type="text" id="camera-name" required class="w-full bg-slate-800 border border-slate-700 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"></div><div class="mb-4"><label for="camera-location" class="block text-sm font-medium text-slate-300 mb-1">Ubicación</label><input type="text" id="camera-location" required class="w-full bg-slate-800 border border-slate-700 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"></div><div class="mb-4"><label for="camera-fps" class="block text-sm font-medium text-slate-300 mb-1">FPS Objetivo</label><input type="number" id="camera-fps" value="10" min="1" max="30" required class="w-full bg-slate-800 border border-slate-700 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"></div><div class="mb-4"><label for="camera-prob" class="block text-sm font-medium text-slate-300 mb-1">Prob. Defecto (%)</label><input type="number" id="camera-prob" value="10" min="1" max="100" required class="w-full bg-slate-800 border border-slate-700 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"></div></div><div class="mb-4"><label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" id="camera-online" class="h-4 w-4 rounded bg-slate-700 border-slate-600 text-blue-600 focus:ring-blue-500"><span>Online</span></label></div><div class="flex gap-4"><button type="submit" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg">Guardar</button><button type="button" id="cancel-camera-form" class="flex-1 bg-slate-600 hover:bg-slate-700 text-white font-semibold py-2 px-4 rounded-lg">Cancelar</button></div></form></div><div class="glassmorphism p-6 rounded-lg lg:col-span-2"><h2 class="text-xl font-semibold mb-4">Tipos de Detección Activos</h2><div id="detection-types-toggles" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div></div><div class="glassmorphism p-6 rounded-lg lg:col-span-2"><h2 class="text-xl font-semibold mb-4">Control de la Demo</h2><div class="flex flex-wrap gap-4"><button id="force-alert-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg">Forzar Alerta</button><button id="reset-demo-btn" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg">Restablecer Demo</button></div><p class="text-sm text-slate-400 mt-2">Restablecer limpiará todos los datos guardados y recargará la página.</p></div></div></section>
+                    </div>
+                </main>
+            </div>
         </div>
     </div>
 
@@ -279,8 +322,9 @@
 
     <script type="module">
         // ===================================================================================
-        // LOGIN & APP INITIALIZATION
+        // MANEJO DE VISTAS PRINCIPALES (Landing vs App)
         // ===================================================================================
+        const landingContainer = document.getElementById('landing-container');
         const loginScreen = document.getElementById('login-screen');
         const mainAppContainer = document.getElementById('main-app');
         const loginForm = document.getElementById('login-form');
@@ -289,19 +333,38 @@
         const eyeIcon = document.getElementById('eye-icon');
         const eyeSlashIcon = document.getElementById('eye-slash-icon');
 
-        function initializeApp() {
-            loginScreen.classList.add('hidden');
-            mainAppContainer.classList.remove('hidden');
-            App.init();
+        function showLoginScreen(e) {
+            e.preventDefault();
+            landingContainer.classList.add('hidden');
+            document.body.classList.add('app-body');
+            loginScreen.classList.remove('hidden');
         }
 
+        function initializeApp() {
+            landingContainer.classList.add('hidden');
+            loginScreen.classList.add('hidden');
+            document.body.classList.add('app-body');
+            mainAppContainer.classList.remove('hidden');
+            App.init(); // Inicia la lógica del dashboard
+        }
+
+        // Event listeners para los botones de "Ingresar" de la landing
+        document.getElementById('login-btn-desktop').addEventListener('click', showLoginScreen);
+        document.getElementById('login-btn-mobile').addEventListener('click', showLoginScreen);
+
+        // Event listener del formulario de login
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            // Para la simulación, cualquier entrada es válida.
             sessionStorage.setItem('isLoggedIn', 'true');
             initializeApp();
         });
+        
+        // Comprobar si ya hay una sesión al cargar la página
+        if (sessionStorage.getItem('isLoggedIn') === 'true') {
+            initializeApp();
+        }
 
+        // Lógica para mostrar/ocultar contraseña
         togglePasswordBtn.addEventListener('click', () => {
             const isPassword = passwordInput.type === 'password';
             passwordInput.type = isPassword ? 'text' : 'password';
@@ -309,42 +372,107 @@
             eyeSlashIcon.classList.toggle('hidden', !isPassword);
         });
 
-        // Comprobar si ya hay una sesión al cargar la página
-        if (sessionStorage.getItem('isLoggedIn') === 'true') {
-            initializeApp();
+        // ===================================================================================
+        // SCRIPTS DE LA LANDING PAGE
+        // ===================================================================================
+        // Menú móvil
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Fondo del header al hacer scroll
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('bg-black/80');
+            } else {
+                header.classList.remove('bg-black/80');
+            }
+        });
+
+        // Animaciones de aparición al hacer scroll
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+        revealElements.forEach(el => {
+            revealObserver.observe(el);
+        });
+
+        // Carousel
+        const carousel = document.getElementById('cyber-carousel');
+        if (carousel) {
+            const cards = carousel.querySelectorAll('.carousel-card');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const cardCount = cards.length;
+            let currentIndex = 0;
+            let autoRotateInterval;
+
+            function updateCarouselClasses() {
+                cards.forEach((card, i) => {
+                    card.classList.remove('card-center', 'card-left', 'card-right');
+                    const leftIndex = (currentIndex - 1 + cardCount) % cardCount;
+                    const rightIndex = (currentIndex + 1) % cardCount;
+                    if (i === currentIndex) card.classList.add('card-center');
+                    else if (i === leftIndex) card.classList.add('card-left');
+                    else if (i === rightIndex) card.classList.add('card-right');
+                });
+            }
+            function startAutoRotate() {
+                stopAutoRotate();
+                autoRotateInterval = setInterval(() => {
+                    currentIndex = (currentIndex + 1) % cardCount;
+                    updateCarouselClasses();
+                }, 4000);
+            }
+            function stopAutoRotate() { clearInterval(autoRotateInterval); }
+
+            prevBtn.addEventListener('click', () => {
+                currentIndex = (currentIndex - 1 + cardCount) % cardCount;
+                updateCarouselClasses();
+                startAutoRotate();
+            });
+            nextBtn.addEventListener('click', () => {
+                currentIndex = (currentIndex + 1) % cardCount;
+                updateCarouselClasses();
+                startAutoRotate();
+            });
+            updateCarouselClasses();
+            startAutoRotate();
         }
 
+        // Formulario de contacto
+        const contactForm = document.getElementById('contact-form');
+        const successMessage = document.getElementById('form-success-message');
+        if(contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                contactForm.reset();
+                successMessage.style.opacity = '1';
+                setTimeout(() => { successMessage.style.opacity = '0'; }, 3000);
+            });
+        }
+        
         // ===================================================================================
-        // CONFIGURACIÓN Y CONSTANTES
+        // SCRIPTS DE LA APLICACIÓN / DASHBOARD
         // ===================================================================================
         const Config = {
-            DETECTION_TYPES: {
-                'Defecto': { color: 'rgba(234, 179, 8, 0.7)', severidad: 'Media' },
-                'Sin casco': { color: 'rgba(249, 115, 22, 0.7)', severidad: 'Alta' },
-                'Área restringida': { color: 'rgba(249, 115, 22, 0.7)', severidad: 'Alta' },
-                'Off-line': { color: 'rgba(239, 68, 68, 0.7)', severidad: 'Crítica' },
-            },
-            SEVERITY_STYLES: {
-                'Crítica': { color: 'red-500', icon: 'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z' },
-                'Alta': { color: 'orange-500', icon: 'M13 16h-1v-4h1v4zm-1-8h1v2h-1V8z' },
-                'Media': { color: 'yellow-500', icon: 'M11 5.093l-8 8V15h1.907l8-8z' }
-            },
-            IMAGES: [
-                'https://placehold.co/600x400/0f172a/e2e8f0?text=Línea+de+Montaje',
-                'https://placehold.co/600x400/1e293b/e2e8f0?text=Área+de+Soldadura',
-                'https://placehold.co/600x400/334155/e2e8f0?text=Control+de+Calidad',
-                'https://placehold.co/600x400/475569/e2e8f0?text=Zona+Logística'
-            ]
+            DETECTION_TYPES: {'Defecto': { color: 'rgba(234, 179, 8, 0.7)', severidad: 'Media' },'Sin casco': { color: 'rgba(249, 115, 22, 0.7)', severidad: 'Alta' },'Área restringida': { color: 'rgba(249, 115, 22, 0.7)', severidad: 'Alta' },'Off-line': { color: 'rgba(239, 68, 68, 0.7)', severidad: 'Crítica' },},
+            SEVERITY_STYLES: {'Crítica': { color: 'red-500', icon: 'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z' },'Alta': { color: 'orange-500', icon: 'M13 16h-1v-4h1v4zm-1-8h1v2h-1V8z' },'Media': { color: 'yellow-500', icon: 'M11 5.093l-8 8V15h1.907l8-8z' }},
+            IMAGES: ['https://placehold.co/600x400/0f172a/e2e8f0?text=Línea+de+Montaje','https://placehold.co/600x400/1e293b/e2e8f0?text=Área+de+Soldadura','https://placehold.co/600x400/334155/e2e8f0?text=Control+de+Calidad','https://placehold.co/600x400/475569/e2e8f0?text=Zona+Logística']
         };
 
-        // ===================================================================================
-        // MÓDULO DE DATOS (LocalStorage)
-        // ===================================================================================
         const Store = {
             getCameras() {
                 const data = localStorage.getItem('st_cameras');
                 if (data) return JSON.parse(data);
-                
                 const defaultCameras = [
                     { id: 'cam-1', nombre: 'Cámara 1', ubicacion: 'Línea de Ensamblaje A', fpsObjetivo: 15, probDefecto: 10, online: true, imageIndex: 0 },
                     { id: 'cam-2', nombre: 'Cámara 2', ubicacion: 'Sector Soldadura', fpsObjetivo: 10, probDefecto: 5, online: true, imageIndex: 1 },
@@ -355,628 +483,80 @@
                 return defaultCameras;
             },
             saveCameras(cameras) { localStorage.setItem('st_cameras', JSON.stringify(cameras)); },
-            
             getSettings() {
                 const data = localStorage.getItem('st_settings');
                 if (data) return JSON.parse(data);
-
-                const defaultSettings = {
-                    detectionTypes: {
-                        'Defecto': true, 'Sin casco': true, 'Área restringida': true, 'Off-line': false
-                    }
-                };
+                const defaultSettings = {detectionTypes: {'Defecto': true, 'Sin casco': true, 'Área restringida': true, 'Off-line': false}};
                 this.saveSettings(defaultSettings);
                 return defaultSettings;
             },
             saveSettings(settings) { localStorage.setItem('st_settings', JSON.stringify(settings)); },
         };
 
-        // ===================================================================================
-        // MÓDULO DE SIMULACIÓN DE DATOS (DataGenerator)
-        // ===================================================================================
         class DataGenerator {
-            constructor(camaras, settings) {
-                this.camaras = camaras;
-                this.settings = settings;
-                this.alertas = [];
-                this.timeline = []; // {t: minuteUnix, count}
-                this.porCam = new Map();
-                this.porTipo = new Map();
-                Object.keys(Config.DETECTION_TYPES).forEach(t => this.porTipo.set(t, 0));
-
-                this.frameTimers = [];
-                this.alertTimer = null;
-                this.listeners = new Set();
-                this.totalFrames = 0;
-            }
-
+            constructor(camaras, settings) { this.camaras = camaras; this.settings = settings; this.alertas = []; this.timeline = []; this.porCam = new Map(); this.porTipo = new Map(); Object.keys(Config.DETECTION_TYPES).forEach(t => this.porTipo.set(t, 0)); this.frameTimers = []; this.alertTimer = null; this.listeners = new Set(); this.totalFrames = 0; }
             on(fn) { this.listeners.add(fn); }
             off(fn) { this.listeners.delete(fn); }
             emit(evt) { this.listeners.forEach(fn => fn(evt)); }
-
-            start() {
-                this.stop(); // Clear previous timers
-                this.camaras.forEach(cam => {
-                    if (cam.online) {
-                        const interval = 1000 / Math.max(1, cam.fpsObjetivo);
-                        const timer = setInterval(() => {
-                            this.totalFrames++;
-                            if (Math.random() < cam.probDefecto / 1000) {
-                                this.emit({ type: "det", cam });
-                            }
-                        }, interval);
-                        this.frameTimers.push(timer);
-                    }
-                });
-                
-                const scheduleNextAlert = () => {
-                    const delay = 3000 + Math.random() * 4000;
-                    this.alertTimer = setTimeout(() => {
-                        this.pushRandomAlert();
-                        scheduleNextAlert();
-                    }, delay);
-                };
-                scheduleNextAlert();
-            }
-            
-            stop() {
-                this.frameTimers.forEach(clearInterval);
-                this.frameTimers = [];
-                clearTimeout(this.alertTimer);
-            }
-
-            pushRandomAlert() {
-                const onlineCams = this.camaras.filter(c => c.online);
-                const activeTypes = Object.keys(this.settings.detectionTypes).filter(t => this.settings.detectionTypes[t]);
-                
-                if (!onlineCams.length || !activeTypes.length) return;
-
-                const cam = onlineCams[Math.floor(Math.random() * onlineCams.length)];
-                const tipo = activeTypes[Math.floor(Math.random() * activeTypes.length)];
-                
-                const severityBias = Math.random();
-                const severidad = severityBias > 0.9 ? "Crítica" : (severityBias > 0.6 ? "Alta" : "Media");
-
-                const alert = {
-                    id: crypto.randomUUID(),
-                    timestamp: Date.now(),
-                    camId: cam.id,
-                    camNombre: cam.nombre,
-                    tipo, severidad,
-                    estado: "Nueva"
-                };
-
-                console.log('ALERTA:', alert);
-
-                this.alertas.unshift(alert);
-                if (this.alertas.length > 200) this.alertas.pop();
-
-                const minute = Math.floor(alert.timestamp / 60000);
-                const last = this.timeline.length > 0 ? this.timeline[this.timeline.length - 1] : null;
-                if (!last || last.t !== minute) {
-                    this.timeline.push({ t: minute, count: 1 });
-                } else {
-                    last.count++;
-                }
-                // Limpiar timeline para mantener solo 24h (1440 minutos)
-                if (this.timeline.length > 1440) this.timeline.shift();
-
-                this.porCam.set(cam.id, (this.porCam.get(cam.id) || 0) + 1);
-                this.porTipo.set(tipo, (this.porTipo.get(tipo) || 0) + 1);
-
-                this.emit({ type: "alert", alert });
-            }
+            start() { this.stop(); this.camaras.forEach(cam => { if (cam.online) { const interval = 1000 / Math.max(1, cam.fpsObjetivo); const timer = setInterval(() => { this.totalFrames++; if (Math.random() < cam.probDefecto / 1000) { this.emit({ type: "det", cam }); } }, interval); this.frameTimers.push(timer); } }); const scheduleNextAlert = () => { const delay = 3000 + Math.random() * 4000; this.alertTimer = setTimeout(() => { this.pushRandomAlert(); scheduleNextAlert(); }, delay); }; scheduleNextAlert(); }
+            stop() { this.frameTimers.forEach(clearInterval); this.frameTimers = []; clearTimeout(this.alertTimer); }
+            pushRandomAlert() { const onlineCams = this.camaras.filter(c => c.online); const activeTypes = Object.keys(this.settings.detectionTypes).filter(t => this.settings.detectionTypes[t]); if (!onlineCams.length || !activeTypes.length) return; const cam = onlineCams[Math.floor(Math.random() * onlineCams.length)]; const tipo = activeTypes[Math.floor(Math.random() * activeTypes.length)]; const severityBias = Math.random(); const severidad = severityBias > 0.9 ? "Crítica" : (severityBias > 0.6 ? "Alta" : "Media"); const alert = { id: crypto.randomUUID(), timestamp: Date.now(), camId: cam.id, camNombre: cam.nombre, tipo, severidad, estado: "Nueva" }; this.alertas.unshift(alert); if (this.alertas.length > 200) this.alertas.pop(); const minute = Math.floor(alert.timestamp / 60000); const last = this.timeline.length > 0 ? this.timeline[this.timeline.length - 1] : null; if (!last || last.t !== minute) { this.timeline.push({ t: minute, count: 1 }); } else { last.count++; } if (this.timeline.length > 1440) this.timeline.shift(); this.porCam.set(cam.id, (this.porCam.get(cam.id) || 0) + 1); this.porTipo.set(tipo, (this.porTipo.get(tipo) || 0) + 1); this.emit({ type: "alert", alert }); }
         }
 
-        // ===================================================================================
-        // APP CORE & STATE MANAGEMENT
-        // ===================================================================================
         const App = {
-            state: {
-                ui: { activeView: 'en-vivo' },
-                dataGenerator: null,
-                kpis: { avgFps: 0, incidentsLastHour: 0, availability: 100.0 },
-                eventTimeout: null
-            },
-            
-            init() {
-                console.log("Iniciando SmartTrace...");
-                const cameras = Store.getCameras();
-                const settings = Store.getSettings();
-
-                this.dataGenerator = new DataGenerator(cameras, settings);
-                
-                UI.init(this);
-                
-                this.dataGenerator.on(this.handleDataEvents.bind(this));
-                this.dataGenerator.start();
-                
-                this.startKPIUpdater();
-                this.resetEventTimeout();
-            },
-
-            handleDataEvents(evt) {
-                if (evt.type === "alert") {
-                    this.resetEventTimeout();
-                    if (this.state.ui.activeView === 'en-vivo') UI.renderLiveAlertFeed(this.dataGenerator.alertas);
-                    if (this.state.ui.activeView === 'alertas') UI.renderAlertsTable(this.dataGenerator.alertas);
-
-                    if (evt.alert.severidad === "Crítica") {
-                        UI.showToast(`⚠️ Alerta crítica en ${evt.alert.camNombre}: ${evt.alert.tipo}`, 'critical');
-                    }
-                }
-            },
-            
-            startKPIUpdater() {
-                setInterval(() => {
-                    const cameras = this.dataGenerator.camaras;
-                    const onlineCams = cameras.filter(c => c.online).length;
-                    
-                    // FPS
-                    const targetFpsSum = cameras.filter(c => c.online).reduce((sum, c) => sum + c.fpsObjetivo, 0);
-                    const avgTargetFps = onlineCams > 0 ? targetFpsSum / onlineCams : 0;
-                    this.state.kpis.avgFps = avgTargetFps * (0.95 + Math.random() * 0.1); // Simular fluctuación
-
-                    // Incidentes
-                    const oneHourAgo = Date.now() - 3600 * 1000;
-                    this.state.kpis.incidentsLastHour = this.dataGenerator.alertas.filter(a => a.timestamp > oneHourAgo).length;
-                    
-                    // Disponibilidad
-                    this.state.kpis.availability = cameras.length > 0 ? (onlineCams / cameras.length) * 100 : 100;
-
-                    const totalIncidents = this.dataGenerator.alertas.length;
-                    UI.renderCounters(cameras.length, this.state.kpis, totalIncidents);
-                }, 1000);
-                
-                // Actualizar gráficos cada 10s
-                setInterval(() => {
-                    if (this.state.ui.activeView === 'reportes') Charts.updateAll(this.dataGenerator);
-                }, 10000);
-            },
-            
-            resetEventTimeout() {
-                clearTimeout(this.state.eventTimeout);
-                UI.hideNoEventsBanner();
-                this.state.eventTimeout = setTimeout(() => {
-                    UI.showNoEventsBanner();
-                }, 10000);
-            },
-
-            restartSimulation() {
-                const cameras = Store.getCameras();
-                const settings = Store.getSettings();
-                this.dataGenerator.stop();
-                this.dataGenerator = new DataGenerator(cameras, settings);
-                this.dataGenerator.on(this.handleDataEvents.bind(this));
-                this.dataGenerator.start();
-                UI.renderDynamicContent(this);
-            }
+            state: { ui: { activeView: 'en-vivo' }, dataGenerator: null, kpis: { avgFps: 0, incidentsLastHour: 0, availability: 100.0 }, eventTimeout: null },
+            init() { console.log("Iniciando SmartTrace Dashboard..."); const cameras = Store.getCameras(); const settings = Store.getSettings(); this.dataGenerator = new DataGenerator(cameras, settings); UI.init(this); this.dataGenerator.on(this.handleDataEvents.bind(this)); this.dataGenerator.start(); this.startKPIUpdater(); this.resetEventTimeout(); },
+            handleDataEvents(evt) { if (evt.type === "alert") { this.resetEventTimeout(); if (this.state.ui.activeView === 'en-vivo') UI.renderLiveAlertFeed(this.dataGenerator.alertas); if (this.state.ui.activeView === 'alertas') UI.renderAlertsTable(this.dataGenerator.alertas); if (evt.alert.severidad === "Crítica") { UI.showToast(`⚠️ Alerta crítica en ${evt.alert.camNombre}: ${evt.alert.tipo}`, 'critical'); } } },
+            startKPIUpdater() { setInterval(() => { const cameras = this.dataGenerator.camaras; const onlineCams = cameras.filter(c => c.online).length; const targetFpsSum = cameras.filter(c => c.online).reduce((sum, c) => sum + c.fpsObjetivo, 0); const avgTargetFps = onlineCams > 0 ? targetFpsSum / onlineCams : 0; this.state.kpis.avgFps = avgTargetFps * (0.95 + Math.random() * 0.1); const oneHourAgo = Date.now() - 3600 * 1000; this.state.kpis.incidentsLastHour = this.dataGenerator.alertas.filter(a => a.timestamp > oneHourAgo).length; this.state.kpis.availability = cameras.length > 0 ? (onlineCams / cameras.length) * 100 : 100; const totalIncidents = this.dataGenerator.alertas.length; UI.renderCounters(cameras.length, this.state.kpis, totalIncidents); }, 1000); setInterval(() => { if (this.state.ui.activeView === 'reportes') Charts.updateAll(this.dataGenerator); }, 10000); },
+            resetEventTimeout() { clearTimeout(this.state.eventTimeout); UI.hideNoEventsBanner(); this.state.eventTimeout = setTimeout(() => { UI.showNoEventsBanner(); }, 10000); },
+            restartSimulation() { const cameras = Store.getCameras(); const settings = Store.getSettings(); this.dataGenerator.stop(); this.dataGenerator = new DataGenerator(cameras, settings); this.dataGenerator.on(this.handleDataEvents.bind(this)); this.dataGenerator.start(); UI.renderDynamicContent(this); }
         };
 
-        // ===================================================================================
-        // MÓDULO UI (Render y Eventos)
-        // ===================================================================================
         const UI = {
-            elements: {},
-            app: null,
-            alertsTable: { currentPage: 1, itemsPerPage: 10, filters: { search: '', severity: 'all', status: 'all', date: '' }},
-            
-            init(appInstance) {
-                this.app = appInstance;
-                this.cacheElements();
-                this.attachEventListeners();
-                this.setActiveView('en-vivo');
-                this.renderDynamicContent(appInstance);
-            },
-
-            cacheElements() {
-                this.elements = {
-                    views: document.querySelectorAll('.view'),
-                    navItems: document.querySelectorAll('.nav-item'),
-                    cameraGrid: document.getElementById('camera-grid'),
-                    liveAlertFeed: document.getElementById('live-alert-feed'),
-                    toastContainer: document.getElementById('toast-container'),
-                    skeletonLoader: document.getElementById('skeleton-loader'),
-                    noEventsBanner: document.getElementById('no-events-banner'),
-                    // Contadores
-                    counterCameras: document.getElementById('counter-cameras'),
-                    counterFps: document.getElementById('counter-fps'),
-                    counterIncidents: document.getElementById('counter-incidents'),
-                    counterAvailability: document.getElementById('counter-availability'),
-                    // Alertas
-                    alertsTableBody: document.getElementById('alerts-table-body'),
-                    alertsPagination: document.getElementById('alerts-pagination'),
-                    alertSearch: document.getElementById('alert-search'),
-                    alertFilterSeverity: document.getElementById('alert-filter-severity'),
-                    alertFilterStatus: document.getElementById('alert-filter-status'),
-                    alertFilterDate: document.getElementById('alert-filter-date'),
-                    // Reportes
-                    exportReportBtn: document.getElementById('export-report-btn'),
-                    incidentsPerCameraList: document.getElementById('incidents-per-camera-list'),
-                    // Config
-                    cameraConfigList: document.getElementById('camera-config-list'),
-                    addNewCameraBtn: document.getElementById('add-new-camera-btn'),
-                    cameraFormContainer: document.getElementById('camera-form-container'),
-                    cameraForm: document.getElementById('camera-form'),
-                    cameraFormTitle: document.getElementById('camera-form-title'),
-                    cancelCameraFormBtn: document.getElementById('cancel-camera-form'),
-                    detectionToggles: document.getElementById('detection-types-toggles'),
-                    resetDemoBtn: document.getElementById('reset-demo-btn'),
-                    forceAlertBtn: document.getElementById('force-alert-btn'),
-                    // Sidebar
-                    sidebarRight: document.getElementById('sidebar-right'),
-                    toggleSidebarRight: document.getElementById('toggle-sidebar-right'),
-                    closeSidebarRight: document.getElementById('close-sidebar-right'),
-                };
-            },
-            
-            attachEventListeners() {
-                this.elements.navItems.forEach(item => item.addEventListener('click', e => { e.preventDefault(); this.setActiveView(item.dataset.view); }));
-                
-                ['input', 'change'].forEach(evt => {
-                    this.elements.alertSearch.addEventListener(evt, () => { this.alertsTable.filters.search = this.elements.alertSearch.value; this.renderAlertsTable(this.app.dataGenerator.alertas); });
-                    this.elements.alertFilterSeverity.addEventListener(evt, () => { this.alertsTable.filters.severity = this.elements.alertFilterSeverity.value; this.renderAlertsTable(this.app.dataGenerator.alertas); });
-                    this.elements.alertFilterStatus.addEventListener(evt, () => { this.alertsTable.filters.status = this.elements.alertFilterStatus.value; this.renderAlertsTable(this.app.dataGenerator.alertas); });
-                    this.elements.alertFilterDate.addEventListener(evt, () => { this.alertsTable.filters.date = this.elements.alertFilterDate.value; this.renderAlertsTable(this.app.dataGenerator.alertas); });
-                });
-                
-                this.elements.alertsTableBody.addEventListener('click', e => this.handleAlertAction(e));
-                this.elements.exportReportBtn.addEventListener('click', () => Export.exportReportData(this.app.dataGenerator));
-
-                this.elements.addNewCameraBtn.addEventListener('click', () => this.showCameraForm());
-                this.elements.cancelCameraFormBtn.addEventListener('click', () => this.hideCameraForm());
-                this.elements.cameraForm.addEventListener('submit', e => this.handleSaveCamera(e));
-                this.elements.forceAlertBtn.addEventListener('click', () => this.app.dataGenerator.pushRandomAlert());
-                this.elements.resetDemoBtn.addEventListener('click', () => { if (confirm('¿Estás seguro? Se perderán todos los datos.')) { localStorage.clear(); window.location.reload(); } });
-                this.elements.detectionToggles.addEventListener('change', e => this.handleDetectionToggle(e));
-
-                this.elements.toggleSidebarRight.addEventListener('click', () => this.elements.sidebarRight.classList.remove('translate-x-full'));
-                this.elements.closeSidebarRight.addEventListener('click', () => this.elements.sidebarRight.classList.add('translate-x-full'));
-                
-                // Event listener para el botón de logout
-                document.getElementById('logout-btn').addEventListener('click', (e) => {
-                    e.preventDefault();
-                    sessionStorage.removeItem('isLoggedIn');
-                    window.location.reload();
-                });
-            },
-
-            renderDynamicContent(app) {
-                this.renderCameraGrid(app.dataGenerator.camaras);
-                this.renderConfig(app.dataGenerator.camaras, app.dataGenerator.settings);
-            },
-            
-            async setActiveView(viewId) {
-                this.app.state.ui.activeView = viewId;
-                this.elements.skeletonLoader.classList.remove('hidden');
-                this.elements.views.forEach(v => v.classList.add('hidden'));
-                await new Promise(resolve => setTimeout(resolve, 300));
-
-                this.elements.navItems.forEach(item => item.classList.toggle('active', item.dataset.view === viewId));
-                const viewToShow = document.getElementById(`view-${viewId}`);
-                if (viewToShow) {
-                    this.elements.skeletonLoader.classList.add('hidden');
-                    viewToShow.classList.remove('hidden');
-                }
-                
-                if (viewId === 'reportes') Charts.init(this.app.dataGenerator);
-                if (viewId === 'alertas') this.renderAlertsTable(this.app.dataGenerator.alertas);
-                this.renderDynamicContent(appInstance);
-            },
-
-            // Renders
-            renderCameraGrid(cameras) {
-                this.elements.cameraGrid.innerHTML = cameras.map(cam => `
-                    <div class="glassmorphism rounded-lg overflow-hidden relative">
-                        <canvas id="canvas-${cam.id}" width="600" height="400" class="w-full h-auto aspect-video ${cam.online ? '' : 'opacity-40'}"></canvas>
-                        <div class="absolute top-2 right-2 px-2 py-1 text-xs rounded ${cam.online ? 'bg-green-500/80' : 'bg-red-500/80'}">${cam.online ? 'ONLINE' : 'OFFLINE'}</div>
-                        <div class="absolute bottom-0 left-0 right-0 p-2 bg-black/30"><h3 class="font-bold text-white">${cam.nombre}</h3><p class="text-xs text-slate-300">${cam.ubicacion}</p></div>
-                    </div>`).join('');
-
-                cameras.forEach(cam => {
-                   const canvas = document.getElementById(`canvas-${cam.id}`);
-                   if (canvas) {
-                     cam.ctx = canvas.getContext('2d');
-                     cam.image = new Image();
-                     cam.image.src = Config.IMAGES[cam.imageIndex % Config.IMAGES.length];
-                     cam.image.onload = () => {
-                         if (cam.ctx) cam.ctx.drawImage(cam.image, 0, 0, 600, 400);
-                     }
-                   }
-                });
-            },
-
-            renderLiveAlertFeed(alerts) {
-                if (alerts.length === 0) return;
-                const liveAlerts = alerts.slice(0, 15);
-                const newFeedHtml = liveAlerts.map(alert => {
-                    const style = Config.SEVERITY_STYLES[alert.severidad];
-                    return `<div class="glassmorphism p-3 rounded-lg flex items-start gap-3 border-l-4 border-${style.color} fade-in-up">
-                        <svg class="w-6 h-6 text-${style.color} flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${style.icon}"></path></svg>
-                        <div><p class="font-semibold text-white">${alert.tipo} en ${alert.camNombre}</p><p class="text-xs text-slate-400">${new Date(alert.timestamp).toLocaleTimeString('es-AR')}</p></div>
-                    </div>`;
-                }).join('');
-                this.elements.liveAlertFeed.innerHTML = newFeedHtml;
-            },
-            
-            renderCounters(totalCams, kpis, totalIncidents) {
-                this.updateKPI(this.elements.counterCameras, totalCams);
-                this.updateKPI(this.elements.counterFps, kpis.avgFps.toFixed(1));
-                this.updateKPI(this.elements.counterIncidents, kpis.incidentsLastHour);
-                this.updateKPI(this.elements.counterAvailability, `${kpis.availability.toFixed(1)}%`);
-                
-                const totalIncidentsEl = document.getElementById('kpi-total-incidents');
-                if(totalIncidentsEl) this.updateKPI(totalIncidentsEl, totalIncidents);
-            },
-            
-            updateKPI(element, newValue) {
-                if (element.textContent !== String(newValue)) {
-                    element.textContent = newValue;
-                    element.classList.add('kpi-bump');
-                    setTimeout(() => element.classList.remove('kpi-bump'), 200);
-                }
-            },
-            
-            showToast(message, type = 'info') {
-                const colors = { info: 'bg-blue-600', success: 'bg-green-600', critical: 'bg-red-600' };
-                const toast = document.createElement('div');
-                toast.className = `fade-in-up ${colors[type]} text-white font-semibold py-3 px-5 rounded-lg shadow-xl`;
-                toast.textContent = message;
-                this.elements.toastContainer.appendChild(toast);
-                setTimeout(() => {
-                    toast.classList.remove('fade-in-up');
-                    toast.classList.add('fade-out-down');
-                    toast.addEventListener('animationend', () => toast.remove());
-                }, 4000);
-            },
-            
-            showNoEventsBanner() { this.elements.noEventsBanner.classList.remove('hidden'); },
-            hideNoEventsBanner() { this.elements.noEventsBanner.classList.add('hidden'); },
-
-            renderAlertsTable(alerts) {
-                let filtered = alerts.filter(alert => {
-                    const f = this.alertsTable.filters;
-                    return (f.search ? alert.tipo.toLowerCase().includes(f.search.toLowerCase()) : true) &&
-                           (f.severity === 'all' || alert.severidad === f.severity) &&
-                           (f.status === 'all' || alert.estado === f.status) &&
-                           (!f.date || new Date(alert.timestamp).toISOString().slice(0, 10) === f.date);
-                });
-                
-                const { currentPage, itemsPerPage } = this.alertsTable;
-                const paginated = filtered.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
-                
-                this.elements.alertsTableBody.innerHTML = paginated.map(alert => {
-                    const style = Config.SEVERITY_STYLES[alert.severidad];
-                    const statusStyles = { Nueva: 'text-yellow-400', Reconocida: 'text-blue-400', Resuelta: 'text-green-400' };
-                    
-                    let actionsHtml = '';
-                    if (alert.estado === 'Nueva') {
-                        actionsHtml = `<button data-id="${alert.id}" data-action="ack" class="font-medium text-blue-500 hover:underline">Reconocer</button>`;
-                    } else if (alert.estado === 'Reconocida') {
-                         actionsHtml = `<button data-id="${alert.id}" data-action="resolve" class="font-medium text-green-500 hover:underline">Resolver</button>`;
-                    }
-
-                    return `<tr class="bg-slate-800/20 border-b border-slate-700 hover:bg-slate-700/50">
-                        <td class="px-6 py-4">${new Date(alert.timestamp).toLocaleString('es-AR')}</td>
-                        <td class="px-6 py-4">${alert.camNombre}</td>
-                        <td class="px-6 py-4">${alert.tipo}</td>
-                        <td class="px-6 py-4"><span class="flex items-center gap-2 text-${style.color}"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="${style.icon}" clip-rule="evenodd"></path></svg>${alert.severidad}</span></td>
-                        <td class="px-6 py-4"><span class="${statusStyles[alert.estado]} font-semibold">${alert.estado}</span></td>
-                        <td class="px-6 py-4">${actionsHtml || '-'}</td>
-                    </tr>`;
-                }).join('');
-                
-                this.renderAlertsPagination(Math.ceil(filtered.length / itemsPerPage), currentPage);
-            },
-            
-            renderAlertsPagination(totalPages, currentPage) {
-                 if (totalPages <= 1) { this.elements.alertsPagination.innerHTML = ''; return; }
-                let buttonsHtml = Array.from({ length: totalPages }, (_, i) => i + 1).map(i => `<button data-page="${i}" class="px-3 py-1 rounded-md ${i === currentPage ? 'bg-blue-600 text-white' : 'bg-slate-700 hover:bg-slate-600'}">${i}</button>`).join('');
-                this.elements.alertsPagination.innerHTML = `<button id="prev-page" class="px-3 py-1 rounded-md bg-slate-700 hover:bg-slate-600 disabled:opacity-50" ${currentPage === 1 ? 'disabled' : ''}>Anterior</button><div class="flex gap-2">${buttonsHtml}</div><button id="next-page" class="px-3 py-1 rounded-md bg-slate-700 hover:bg-slate-600 disabled:opacity-50" ${currentPage === totalPages ? 'disabled' : ''}>Siguiente</button>`;
-                this.elements.alertsPagination.querySelectorAll('button').forEach(btn => btn.addEventListener('click', e => this.handlePaginationClick(e, totalPages)));
-            },
-            
-            handlePaginationClick(e, totalPages) {
-                const { page } = e.currentTarget.dataset;
-                if (page) this.alertsTable.currentPage = parseInt(page);
-                else if (e.currentTarget.id === 'prev-page' && this.alertsTable.currentPage > 1) this.alertsTable.currentPage--;
-                else if (e.currentTarget.id === 'next-page' && this.alertsTable.currentPage < totalPages) this.alertsTable.currentPage++;
-                this.renderAlertsTable(this.app.dataGenerator.alertas);
-            },
-            
-            handleAlertAction(e) {
-                const button = e.target.closest('button[data-id]');
-                if (!button) return;
-                const { id, action } = button.dataset;
-                const alert = this.app.dataGenerator.alertas.find(a => a.id === id);
-                if (!alert) return;
-
-                // REAL-WORLD: Aquí harías una petición REST (POST) para actualizar el estado en el backend.
-                // fetch(`/api/alerts/${id}/actions`, { method: 'POST', body: JSON.stringify({ action }) });
-                if (action === 'ack' && alert.estado === 'Nueva') alert.estado = 'Reconocida';
-                if (action === 'resolve' && alert.estado === 'Reconocida') alert.estado = 'Resuelta';
-
-                this.renderAlertsTable(this.app.dataGenerator.alertas);
-                this.showToast(`Alerta ${action === 'ack' ? 'reconocida' : 'resuelta'}.`, 'success');
-            },
-
-            renderIncidentsPerCameraList(generator) {
-                const cameras = Store.getCameras();
-                const incidentsMap = generator.porCam;
-                const listEl = this.elements.incidentsPerCameraList;
-                if (!listEl) return;
-
-                const totalIncidents = generator.alertas.length;
-
-                const content = cameras.map(cam => {
-                    const count = incidentsMap.get(cam.id) || 0;
-                    const percentage = totalIncidents > 0 ? ((count / totalIncidents) * 100).toFixed(1) : 0;
-                    return `
-                        <div class="flex items-center justify-between text-sm p-2 bg-slate-800/50 rounded">
-                            <div>
-                                <span class="font-medium text-slate-200">${cam.nombre}</span>
-                                <span class="text-slate-400">(${cam.ubicacion})</span>
-                            </div>
-                            <div class="flex items-center gap-4">
-                               <div class="w-32 bg-slate-700 rounded-full h-2.5">
-                                  <div class="bg-blue-500 h-2.5 rounded-full" style="width: ${percentage}%"></div>
-                               </div>
-                               <span class="font-semibold text-white w-12 text-right">${count}</span>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-
-                listEl.innerHTML = content || '<p class="text-slate-400">No hay datos de incidentes.</p>';
-            },
-
-            // Configuración
+            elements: {}, app: null, alertsTable: { currentPage: 1, itemsPerPage: 10, filters: { search: '', severity: 'all', status: 'all', date: '' }},
+            init(appInstance) { this.app = appInstance; this.cacheElements(); this.attachEventListeners(); this.setActiveView('en-vivo'); this.renderDynamicContent(appInstance); },
+            cacheElements() { this.elements = { views: document.querySelectorAll('.view'), navItems: document.querySelectorAll('.nav-item'), cameraGrid: document.getElementById('camera-grid'), liveAlertFeed: document.getElementById('live-alert-feed'), toastContainer: document.getElementById('toast-container'), skeletonLoader: document.getElementById('skeleton-loader'), noEventsBanner: document.getElementById('no-events-banner'), counterCameras: document.getElementById('counter-cameras'), counterFps: document.getElementById('counter-fps'), counterIncidents: document.getElementById('counter-incidents'), counterAvailability: document.getElementById('counter-availability'), alertsTableBody: document.getElementById('alerts-table-body'), alertsPagination: document.getElementById('alerts-pagination'), alertSearch: document.getElementById('alert-search'), alertFilterSeverity: document.getElementById('alert-filter-severity'), alertFilterStatus: document.getElementById('alert-filter-status'), alertFilterDate: document.getElementById('alert-filter-date'), exportReportBtn: document.getElementById('export-report-btn'), incidentsPerCameraList: document.getElementById('incidents-per-camera-list'), cameraConfigList: document.getElementById('camera-config-list'), addNewCameraBtn: document.getElementById('add-new-camera-btn'), cameraFormContainer: document.getElementById('camera-form-container'), cameraForm: document.getElementById('camera-form'), cameraFormTitle: document.getElementById('camera-form-title'), cancelCameraFormBtn: document.getElementById('cancel-camera-form'), detectionToggles: document.getElementById('detection-types-toggles'), resetDemoBtn: document.getElementById('reset-demo-btn'), forceAlertBtn: document.getElementById('force-alert-btn'), sidebarRight: document.getElementById('sidebar-right'), toggleSidebarRight: document.getElementById('toggle-sidebar-right'), closeSidebarRight: document.getElementById('close-sidebar-right'), }; },
+            attachEventListeners() { this.elements.navItems.forEach(item => item.addEventListener('click', e => { e.preventDefault(); this.setActiveView(item.dataset.view); })); ['input', 'change'].forEach(evt => { this.elements.alertSearch.addEventListener(evt, () => { this.alertsTable.filters.search = this.elements.alertSearch.value; this.renderAlertsTable(this.app.dataGenerator.alertas); }); this.elements.alertFilterSeverity.addEventListener(evt, () => { this.alertsTable.filters.severity = this.elements.alertFilterSeverity.value; this.renderAlertsTable(this.app.dataGenerator.alertas); }); this.elements.alertFilterStatus.addEventListener(evt, () => { this.alertsTable.filters.status = this.elements.alertFilterStatus.value; this.renderAlertsTable(this.app.dataGenerator.alertas); }); this.elements.alertFilterDate.addEventListener(evt, () => { this.alertsTable.filters.date = this.elements.alertFilterDate.value; this.renderAlertsTable(this.app.dataGenerator.alertas); }); }); this.elements.alertsTableBody.addEventListener('click', e => this.handleAlertAction(e)); this.elements.exportReportBtn.addEventListener('click', () => Export.exportReportData(this.app.dataGenerator)); this.elements.addNewCameraBtn.addEventListener('click', () => this.showCameraForm()); this.elements.cancelCameraFormBtn.addEventListener('click', () => this.hideCameraForm()); this.elements.cameraForm.addEventListener('submit', e => this.handleSaveCamera(e)); this.elements.forceAlertBtn.addEventListener('click', () => this.app.dataGenerator.pushRandomAlert()); this.elements.resetDemoBtn.addEventListener('click', () => { if (confirm('¿Estás seguro? Se perderán todos los datos.')) { localStorage.clear(); window.location.reload(); } }); this.elements.detectionToggles.addEventListener('change', e => this.handleDetectionToggle(e)); this.elements.toggleSidebarRight.addEventListener('click', () => this.elements.sidebarRight.classList.remove('translate-x-full')); this.elements.closeSidebarRight.addEventListener('click', () => this.elements.sidebarRight.classList.add('translate-x-full')); document.getElementById('logout-btn').addEventListener('click', (e) => { e.preventDefault(); sessionStorage.removeItem('isLoggedIn'); window.location.reload(); }); },
+            renderDynamicContent(app) { this.renderCameraGrid(app.dataGenerator.camaras); this.renderConfig(app.dataGenerator.camaras, app.dataGenerator.settings); },
+            async setActiveView(viewId) { this.app.state.ui.activeView = viewId; this.elements.skeletonLoader.classList.remove('hidden'); this.elements.views.forEach(v => v.classList.add('hidden')); await new Promise(resolve => setTimeout(resolve, 300)); this.elements.navItems.forEach(item => item.classList.toggle('active', item.dataset.view === viewId)); const viewToShow = document.getElementById(`view-${viewId}`); if (viewToShow) { this.elements.skeletonLoader.classList.add('hidden'); viewToShow.classList.remove('hidden'); } if (viewId === 'reportes') Charts.init(this.app.dataGenerator); if (viewId === 'alertas') this.renderAlertsTable(this.app.dataGenerator.alertas); },
+            renderCameraGrid(cameras) { this.elements.cameraGrid.innerHTML = cameras.map(cam => `<div class="glassmorphism rounded-lg overflow-hidden relative"><canvas id="canvas-${cam.id}" width="600" height="400" class="w-full h-auto aspect-video ${cam.online ? '' : 'opacity-40'}"></canvas><div class="absolute top-2 right-2 px-2 py-1 text-xs rounded ${cam.online ? 'bg-green-500/80' : 'bg-red-500/80'}">${cam.online ? 'ONLINE' : 'OFFLINE'}</div><div class="absolute bottom-0 left-0 right-0 p-2 bg-black/30"><h3 class="font-bold text-white">${cam.nombre}</h3><p class="text-xs text-slate-300">${cam.ubicacion}</p></div></div>`).join(''); cameras.forEach(cam => { const canvas = document.getElementById(`canvas-${cam.id}`); if (canvas) { cam.ctx = canvas.getContext('2d'); cam.image = new Image(); cam.image.src = Config.IMAGES[cam.imageIndex % Config.IMAGES.length]; cam.image.onload = () => { if (cam.ctx) cam.ctx.drawImage(cam.image, 0, 0, 600, 400); } } }); },
+            renderLiveAlertFeed(alerts) { if (alerts.length === 0) return; const liveAlerts = alerts.slice(0, 15); const newFeedHtml = liveAlerts.map(alert => { const style = Config.SEVERITY_STYLES[alert.severidad]; return `<div class="glassmorphism p-3 rounded-lg flex items-start gap-3 border-l-4 border-${style.color} fade-in-up"><svg class="w-6 h-6 text-${style.color} flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${style.icon}"></path></svg><div><p class="font-semibold text-white">${alert.tipo} en ${alert.camNombre}</p><p class="text-xs text-slate-400">${new Date(alert.timestamp).toLocaleTimeString('es-AR')}</p></div></div>`; }).join(''); this.elements.liveAlertFeed.innerHTML = newFeedHtml; },
+            renderCounters(totalCams, kpis, totalIncidents) { this.updateKPI(this.elements.counterCameras, totalCams); this.updateKPI(this.elements.counterFps, kpis.avgFps.toFixed(1)); this.updateKPI(this.elements.counterIncidents, kpis.incidentsLastHour); this.updateKPI(this.elements.counterAvailability, `${kpis.availability.toFixed(1)}%`); const totalIncidentsEl = document.getElementById('kpi-total-incidents'); if(totalIncidentsEl) this.updateKPI(totalIncidentsEl, totalIncidents); },
+            updateKPI(element, newValue) { if (element.textContent !== String(newValue)) { element.textContent = newValue; element.classList.add('kpi-bump'); setTimeout(() => element.classList.remove('kpi-bump'), 200); } },
+            showToast(message, type = 'info') { const colors = { info: 'bg-blue-600', success: 'bg-green-600', critical: 'bg-red-600' }; const toast = document.createElement('div'); toast.className = `fade-in-up ${colors[type]} text-white font-semibold py-3 px-5 rounded-lg shadow-xl`; toast.textContent = message; this.elements.toastContainer.appendChild(toast); setTimeout(() => { toast.classList.remove('fade-in-up'); toast.classList.add('fade-out-down'); toast.addEventListener('animationend', () => toast.remove()); }, 4000); },
+            showNoEventsBanner() { this.elements.noEventsBanner.classList.remove('hidden'); }, hideNoEventsBanner() { this.elements.noEventsBanner.classList.add('hidden'); },
+            renderAlertsTable(alerts) { let filtered = alerts.filter(alert => { const f = this.alertsTable.filters; return (f.search ? alert.tipo.toLowerCase().includes(f.search.toLowerCase()) : true) && (f.severity === 'all' || alert.severidad === f.severity) && (f.status === 'all' || alert.estado === f.status) && (!f.date || new Date(alert.timestamp).toISOString().slice(0, 10) === f.date); }); const { currentPage, itemsPerPage } = this.alertsTable; const paginated = filtered.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage); this.elements.alertsTableBody.innerHTML = paginated.map(alert => { const style = Config.SEVERITY_STYLES[alert.severidad]; const statusStyles = { Nueva: 'text-yellow-400', Reconocida: 'text-blue-400', Resuelta: 'text-green-400' }; let actionsHtml = ''; if (alert.estado === 'Nueva') { actionsHtml = `<button data-id="${alert.id}" data-action="ack" class="font-medium text-blue-500 hover:underline">Reconocer</button>`; } else if (alert.estado === 'Reconocida') { actionsHtml = `<button data-id="${alert.id}" data-action="resolve" class="font-medium text-green-500 hover:underline">Resolver</button>`; } return `<tr class="bg-slate-800/20 border-b border-slate-700 hover:bg-slate-700/50"><td class="px-6 py-4">${new Date(alert.timestamp).toLocaleString('es-AR')}</td><td class="px-6 py-4">${alert.camNombre}</td><td class="px-6 py-4">${alert.tipo}</td><td class="px-6 py-4"><span class="flex items-center gap-2 text-${style.color}"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="${style.icon}" clip-rule="evenodd"></path></svg>${alert.severidad}</span></td><td class="px-6 py-4"><span class="${statusStyles[alert.estado]} font-semibold">${alert.estado}</span></td><td class="px-6 py-4">${actionsHtml || '-'}</td></tr>`; }).join(''); this.renderAlertsPagination(Math.ceil(filtered.length / itemsPerPage), currentPage); },
+            renderAlertsPagination(totalPages, currentPage) { if (totalPages <= 1) { this.elements.alertsPagination.innerHTML = ''; return; } let buttonsHtml = Array.from({ length: totalPages }, (_, i) => i + 1).map(i => `<button data-page="${i}" class="px-3 py-1 rounded-md ${i === currentPage ? 'bg-blue-600 text-white' : 'bg-slate-700 hover:bg-slate-600'}">${i}</button>`).join(''); this.elements.alertsPagination.innerHTML = `<button id="prev-page" class="px-3 py-1 rounded-md bg-slate-700 hover:bg-slate-600 disabled:opacity-50" ${currentPage === 1 ? 'disabled' : ''}>Anterior</button><div class="flex gap-2">${buttonsHtml}</div><button id="next-page" class="px-3 py-1 rounded-md bg-slate-700 hover:bg-slate-600 disabled:opacity-50" ${currentPage === totalPages ? 'disabled' : ''}>Siguiente</button>`; this.elements.alertsPagination.querySelectorAll('button').forEach(btn => btn.addEventListener('click', e => this.handlePaginationClick(e, totalPages))); },
+            handlePaginationClick(e, totalPages) { const { page } = e.currentTarget.dataset; if (page) this.alertsTable.currentPage = parseInt(page); else if (e.currentTarget.id === 'prev-page' && this.alertsTable.currentPage > 1) this.alertsTable.currentPage--; else if (e.currentTarget.id === 'next-page' && this.alertsTable.currentPage < totalPages) this.alertsTable.currentPage++; this.renderAlertsTable(this.app.dataGenerator.alertas); },
+            handleAlertAction(e) { const button = e.target.closest('button[data-id]'); if (!button) return; const { id, action } = button.dataset; const alert = this.app.dataGenerator.alertas.find(a => a.id === id); if (!alert) return; if (action === 'ack' && alert.estado === 'Nueva') alert.estado = 'Reconocida'; if (action === 'resolve' && alert.estado === 'Reconocida') alert.estado = 'Resuelta'; this.renderAlertsTable(this.app.dataGenerator.alertas); this.showToast(`Alerta ${action === 'ack' ? 'reconocida' : 'resuelta'}.`, 'success'); },
+            renderIncidentsPerCameraList(generator) { const cameras = Store.getCameras(); const incidentsMap = generator.porCam; const listEl = this.elements.incidentsPerCameraList; if (!listEl) return; const totalIncidents = generator.alertas.length; const content = cameras.map(cam => { const count = incidentsMap.get(cam.id) || 0; const percentage = totalIncidents > 0 ? ((count / totalIncidents) * 100).toFixed(1) : 0; return `<div class="flex items-center justify-between text-sm p-2 bg-slate-800/50 rounded"><div><span class="font-medium text-slate-200">${cam.nombre}</span><span class="text-slate-400">(${cam.ubicacion})</span></div><div class="flex items-center gap-4"><div class="w-32 bg-slate-700 rounded-full h-2.5"><div class="bg-blue-500 h-2.5 rounded-full" style="width: ${percentage}%"></div></div><span class="font-semibold text-white w-12 text-right">${count}</span></div></div>`; }).join(''); listEl.innerHTML = content || '<p class="text-slate-400">No hay datos de incidentes.</p>'; },
             renderConfig(cameras, settings) { this.renderCameraConfigList(cameras); this.renderDetectionToggles(settings); },
-            renderCameraConfigList(cameras) {
-                this.elements.cameraConfigList.innerHTML = cameras.map(cam => `
-                    <div class="flex justify-between items-center p-3 bg-slate-800 rounded-lg">
-                        <div><p class="font-semibold">${cam.nombre}</p><p class="text-sm text-slate-400">${cam.ubicacion}</p></div>
-                        <div class="flex gap-2">
-                            <button data-id="${cam.id}" class="edit-camera-btn p-2 hover:bg-slate-700 rounded-md"><svg class="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg></button>
-                            <button data-id="${cam.id}" class="delete-camera-btn p-2 hover:bg-slate-700 rounded-md"><svg class="w-5 h-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>
-                        </div></div>`).join('');
-                this.elements.cameraConfigList.querySelectorAll('.edit-camera-btn').forEach(btn => btn.addEventListener('click', e => this.handleEditCamera(e)));
-                this.elements.cameraConfigList.querySelectorAll('.delete-camera-btn').forEach(btn => btn.addEventListener('click', e => this.handleDeleteCamera(e)));
-            },
-            renderDetectionToggles(settings) {
-                this.elements.detectionToggles.innerHTML = Object.entries(settings.detectionTypes)
-                    .map(([type, enabled]) => `<label class="flex items-center gap-3 p-3 bg-slate-800 rounded-lg cursor-pointer"><input type="checkbox" data-type="${type}" class="h-4 w-4 rounded bg-slate-700 border-slate-600 text-blue-600 focus:ring-blue-500" ${enabled ? 'checked' : ''}><span>${type}</span></label>`).join('');
-            },
-            showCameraForm(camera = null) {
-                this.elements.cameraFormContainer.classList.remove('hidden');
-                this.elements.cameraForm.reset();
-                if (camera) {
-                    this.elements.cameraFormTitle.textContent = 'Editar Cámara';
-                    document.getElementById('camera-id').value = camera.id;
-                    document.getElementById('camera-name').value = camera.nombre;
-                    document.getElementById('camera-location').value = camera.ubicacion;
-                    document.getElementById('camera-fps').value = camera.fpsObjetivo;
-                    document.getElementById('camera-prob').value = camera.probDefecto;
-                    document.getElementById('camera-online').checked = camera.online;
-                } else {
-                    this.elements.cameraFormTitle.textContent = 'Agregar Cámara';
-                    document.getElementById('camera-id').value = '';
-                }
-            },
+            renderCameraConfigList(cameras) { this.elements.cameraConfigList.innerHTML = cameras.map(cam => `<div class="flex justify-between items-center p-3 bg-slate-800 rounded-lg"><div><p class="font-semibold">${cam.nombre}</p><p class="text-sm text-slate-400">${cam.ubicacion}</p></div><div class="flex gap-2"><button data-id="${cam.id}" class="edit-camera-btn p-2 hover:bg-slate-700 rounded-md"><svg class="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg></button><button data-id="${cam.id}" class="delete-camera-btn p-2 hover:bg-slate-700 rounded-md"><svg class="w-5 h-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button></div></div>`).join(''); this.elements.cameraConfigList.querySelectorAll('.edit-camera-btn').forEach(btn => btn.addEventListener('click', e => this.handleEditCamera(e))); this.elements.cameraConfigList.querySelectorAll('.delete-camera-btn').forEach(btn => btn.addEventListener('click', e => this.handleDeleteCamera(e))); },
+            renderDetectionToggles(settings) { this.elements.detectionToggles.innerHTML = Object.entries(settings.detectionTypes).map(([type, enabled]) => `<label class="flex items-center gap-3 p-3 bg-slate-800 rounded-lg cursor-pointer"><input type="checkbox" data-type="${type}" class="h-4 w-4 rounded bg-slate-700 border-slate-600 text-blue-600 focus:ring-blue-500" ${enabled ? 'checked' : ''}><span>${type}</span></label>`).join(''); },
+            showCameraForm(camera = null) { this.elements.cameraFormContainer.classList.remove('hidden'); this.elements.cameraForm.reset(); if (camera) { this.elements.cameraFormTitle.textContent = 'Editar Cámara'; document.getElementById('camera-id').value = camera.id; document.getElementById('camera-name').value = camera.nombre; document.getElementById('camera-location').value = camera.ubicacion; document.getElementById('camera-fps').value = camera.fpsObjetivo; document.getElementById('camera-prob').value = camera.probDefecto; document.getElementById('camera-online').checked = camera.online; } else { this.elements.cameraFormTitle.textContent = 'Agregar Cámara'; document.getElementById('camera-id').value = ''; } },
             hideCameraForm() { this.elements.cameraFormContainer.classList.add('hidden'); },
-            handleSaveCamera(e) {
-                e.preventDefault();
-                const id = document.getElementById('camera-id').value;
-                const cameras = Store.getCameras();
-                const camData = {
-                    nombre: document.getElementById('camera-name').value,
-                    ubicacion: document.getElementById('camera-location').value,
-                    fpsObjetivo: parseInt(document.getElementById('camera-fps').value),
-                    probDefecto: parseInt(document.getElementById('camera-prob').value),
-                    online: document.getElementById('camera-online').checked
-                };
-
-                if (id) {
-                    const index = cameras.findIndex(c => c.id === id);
-                    if (index > -1) cameras[index] = { ...cameras[index], ...camData };
-                } else {
-                    cameras.push({ id: `cam-${Date.now()}`, ...camData, imageIndex: Math.floor(Math.random() * Config.IMAGES.length) });
-                }
-                
-                Store.saveCameras(cameras);
-                this.hideCameraForm();
-                this.app.restartSimulation();
-                this.showToast('Cámara guardada. Simulación reiniciada.', 'success');
-            },
+            handleSaveCamera(e) { e.preventDefault(); const id = document.getElementById('camera-id').value; const cameras = Store.getCameras(); const camData = { nombre: document.getElementById('camera-name').value, ubicacion: document.getElementById('camera-location').value, fpsObjetivo: parseInt(document.getElementById('camera-fps').value), probDefecto: parseInt(document.getElementById('camera-prob').value), online: document.getElementById('camera-online').checked }; if (id) { const index = cameras.findIndex(c => c.id === id); if (index > -1) cameras[index] = { ...cameras[index], ...camData }; } else { cameras.push({ id: `cam-${Date.now()}`, ...camData, imageIndex: Math.floor(Math.random() * Config.IMAGES.length) }); } Store.saveCameras(cameras); this.hideCameraForm(); this.app.restartSimulation(); this.showToast('Cámara guardada. Simulación reiniciada.', 'success'); },
             handleEditCamera(e) { this.showCameraForm(Store.getCameras().find(c => c.id === e.currentTarget.dataset.id)); },
-            handleDeleteCamera(e) {
-                if (confirm('¿Seguro que quieres eliminar esta cámara?')) {
-                    const cameras = Store.getCameras().filter(c => c.id !== e.currentTarget.dataset.id);
-                    Store.saveCameras(cameras);
-                    this.app.restartSimulation();
-                    this.showToast('Cámara eliminada. Simulación reiniciada.', 'info');
-                }
-            },
-            handleDetectionToggle(e) {
-                const settings = Store.getSettings();
-                settings.detectionTypes[e.target.dataset.type] = e.target.checked;
-                Store.saveSettings(settings);
-                this.app.dataGenerator.settings = settings; // Update live generator
-                this.showToast('Configuración de detección actualizada.', 'info');
-            }
+            handleDeleteCamera(e) { if (confirm('¿Seguro que quieres eliminar esta cámara?')) { const cameras = Store.getCameras().filter(c => c.id !== e.currentTarget.dataset.id); Store.saveCameras(cameras); this.app.restartSimulation(); this.showToast('Cámara eliminada. Simulación reiniciada.', 'info'); } },
+            handleDetectionToggle(e) { const settings = Store.getSettings(); settings.detectionTypes[e.target.dataset.type] = e.target.checked; Store.saveSettings(settings); this.app.dataGenerator.settings = settings; this.showToast('Configuración de detección actualizada.', 'info'); }
         };
         
-        // ===================================================================================
-        // MÓDULO DE GRÁFICOS (Chart.js)
-        // ===================================================================================
         const Charts = {
             instances: {},
-            init(generator) {
-                this.createIncidentsByHourChart(generator);
-                this.createTopCamerasChart(generator);
-                this.createDefectDistributionChart(generator);
-                UI.renderIncidentsPerCameraList(generator);
-            },
-            updateAll(generator) {
-                this.updateLineChart(this.instances.incidents, generator.timeline);
-                this.updateBarChart(this.instances.topCameras, generator.porCam);
-                this.updateDoughnutChart(this.instances.defects, generator.porTipo);
-                UI.renderIncidentsPerCameraList(generator);
-            },
-            getChartConfig() { /* ... same as before, simplified for brevity ... */
-                return { options: { maintainAspectRatio: false, plugins: { legend: { labels: { color: '#cbd5e1' } } }, scales: { x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(71, 85, 105, 0.5)' } }, y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(71, 85, 105, 0.5)' }, beginAtZero: true } } } };
-            },
-            createIncidentsByHourChart(g) {
-                const ctx = document.getElementById('incidents-by-hour-chart'); if (!ctx) return;
-                if (this.instances.incidents) this.instances.incidents.destroy();
-                this.instances.incidents = new Chart(ctx, { type: 'line', data: { labels: [], datasets: [{ label: 'Incidentes', data: [], borderColor: 'var(--color-primary)', backgroundColor: 'rgba(59, 130, 246, 0.2)', fill: true, tension: 0.4 }] }, ...this.getChartConfig() });
-                this.updateLineChart(this.instances.incidents, g.timeline);
-            },
-            createTopCamerasChart(g) {
-                const ctx = document.getElementById('top-cameras-chart'); if (!ctx) return;
-                if (this.instances.topCameras) this.instances.topCameras.destroy();
-                this.instances.topCameras = new Chart(ctx, { type: 'bar', data: { labels: [], datasets: [{ label: 'Nº de Incidentes', data: [], backgroundColor: 'var(--color-primary-light)', borderRadius: 4 }] }, ...this.getChartConfig() });
-                this.updateBarChart(this.instances.topCameras, g.porCam);
-            },
-            createDefectDistributionChart(g) {
-                const ctx = document.getElementById('defect-distribution-chart'); if (!ctx) return;
-                if (this.instances.defects) this.instances.defects.destroy();
-                this.instances.defects = new Chart(ctx, { type: 'doughnut', data: { labels: [], datasets: [{ data: [], backgroundColor: ['#3b82f6', '#f97316', '#ef4444', '#eab308'], borderColor: '#0f172a', borderWidth: 4 }] }, options: { plugins: { legend: { position: 'bottom', labels: { color: '#cbd5e1' } } } } });
-                this.updateDoughnutChart(this.instances.defects, g.porTipo);
-            },
-            updateLineChart(chart, timeline) {
-                if (!chart) return;
-                const last24h = timeline.slice(-1440); // Max 24h
-                chart.data.labels = last24h.map(m => new Date(m.t * 60000).toLocaleTimeString('es-AR', {hour: '2-digit', minute:'2-digit'}));
-                chart.data.datasets[0].data = last24h.map(m => m.count);
-                chart.update('none');
-            },
-            updateBarChart(chart, porCam) {
-                if (!chart) return;
-                const sorted = [...porCam.entries()].sort((a, b) => b[1] - a[1]).slice(0, 5);
-                const camNames = Store.getCameras().reduce((acc, cam) => ({ ...acc, [cam.id]: cam.nombre }), {});
-                chart.data.labels = sorted.map(c => camNames[c[0]] || c[0]);
-                chart.data.datasets[0].data = sorted.map(c => c[1]);
-                chart.update('none');
-            },
-            updateDoughnutChart(chart, porTipo) {
-                if (!chart) return;
-                chart.data.labels = [...porTipo.keys()];
-                chart.data.datasets[0].data = [...porTipo.values()];
-                chart.update('none');
-            }
+            init(generator) { this.createIncidentsByHourChart(generator); this.createTopCamerasChart(generator); this.createDefectDistributionChart(generator); UI.renderIncidentsPerCameraList(generator); },
+            updateAll(generator) { this.updateLineChart(this.instances.incidents, generator.timeline); this.updateBarChart(this.instances.topCameras, generator.porCam); this.updateDoughnutChart(this.instances.defects, generator.porTipo); UI.renderIncidentsPerCameraList(generator); },
+            getChartConfig() { return { options: { maintainAspectRatio: false, plugins: { legend: { labels: { color: '#cbd5e1' } } }, scales: { x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(71, 85, 105, 0.5)' } }, y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(71, 85, 105, 0.5)' }, beginAtZero: true } } } }; },
+            createIncidentsByHourChart(g) { const ctx = document.getElementById('incidents-by-hour-chart'); if (!ctx) return; if (this.instances.incidents) this.instances.incidents.destroy(); this.instances.incidents = new Chart(ctx, { type: 'line', data: { labels: [], datasets: [{ label: 'Incidentes', data: [], borderColor: 'var(--color-primary)', backgroundColor: 'rgba(59, 130, 246, 0.2)', fill: true, tension: 0.4 }] }, ...this.getChartConfig() }); this.updateLineChart(this.instances.incidents, g.timeline); },
+            createTopCamerasChart(g) { const ctx = document.getElementById('top-cameras-chart'); if (!ctx) return; if (this.instances.topCameras) this.instances.topCameras.destroy(); this.instances.topCameras = new Chart(ctx, { type: 'bar', data: { labels: [], datasets: [{ label: 'Nº de Incidentes', data: [], backgroundColor: 'var(--color-primary-light)', borderRadius: 4 }] }, ...this.getChartConfig() }); this.updateBarChart(this.instances.topCameras, g.porCam); },
+            createDefectDistributionChart(g) { const ctx = document.getElementById('defect-distribution-chart'); if (!ctx) return; if (this.instances.defects) this.instances.defects.destroy(); this.instances.defects = new Chart(ctx, { type: 'doughnut', data: { labels: [], datasets: [{ data: [], backgroundColor: ['#3b82f6', '#f97316', '#ef4444', '#eab308'], borderColor: '#0f172a', borderWidth: 4 }] }, options: { plugins: { legend: { position: 'bottom', labels: { color: '#cbd5e1' } } } } }); this.updateDoughnutChart(this.instances.defects, g.porTipo); },
+            updateLineChart(chart, timeline) { if (!chart) return; const last24h = timeline.slice(-1440); chart.data.labels = last24h.map(m => new Date(m.t * 60000).toLocaleTimeString('es-AR', {hour: '2-digit', minute:'2-digit'})); chart.data.datasets[0].data = last24h.map(m => m.count); chart.update('none'); },
+            updateBarChart(chart, porCam) { if (!chart) return; const sorted = [...porCam.entries()].sort((a, b) => b[1] - a[1]).slice(0, 5); const camNames = Store.getCameras().reduce((acc, cam) => ({ ...acc, [cam.id]: cam.nombre }), {}); chart.data.labels = sorted.map(c => camNames[c[0]] || c[0]); chart.data.datasets[0].data = sorted.map(c => c[1]); chart.update('none'); },
+            updateDoughnutChart(chart, porTipo) { if (!chart) return; chart.data.labels = [...porTipo.keys()]; chart.data.datasets[0].data = [...porTipo.values()]; chart.update('none'); }
         };
         
-        // ===================================================================================
-        // MÓDULO DE EXPORTACIÓN
-        // ===================================================================================
         const Export = {
             exportReportData(generator) {
-                const data = {
-                    timestamp: new Date().toISOString(),
-                    alertas: generator.alertas.slice(0, 50),
-                    stats: { timeline: generator.timeline, porCam: Object.fromEntries(generator.porCam), porTipo: Object.fromEntries(generator.porTipo) }
-                };
+                const data = { timestamp: new Date().toISOString(), alertas: generator.alertas.slice(0, 50), stats: { timeline: generator.timeline, porCam: Object.fromEntries(generator.porCam), porTipo: Object.fromEntries(generator.porTipo) } };
                 const jsonString = JSON.stringify(data, null, 2);
                 const blob = new Blob([jsonString], { type: 'application/json' });
                 const url = URL.createObjectURL(blob);
@@ -986,12 +566,8 @@
                 document.body.appendChild(a); a.click(); document.body.removeChild(a);
                 URL.revokeObjectURL(url);
                 UI.showToast('Reporte JSON descargado', 'success');
-                 // REAL-WORLD: fetch('/api/export?format=pdf')...
             }
         };
-
-        // El inicio de la app ahora es condicional al login
-        // document.addEventListener('DOMContentLoaded', () => App.init());
     </script>
 </body>
 </html>
